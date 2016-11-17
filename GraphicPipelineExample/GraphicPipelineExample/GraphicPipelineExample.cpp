@@ -223,7 +223,7 @@ Matrix44<double> viewTransform(Vec3<double> eye,double azimuth,double elevation)
  {
 	 double Ax = ((1 + projP.x) / 2)*width;
 	 double Ay = height-((1 + projP.y) / 2)*height;
-	 return Vec3<double>(Ax, Ay, projP.z);
+	 return Vec3<double>(Ax, Ay, projP.z,projP.w);
  }
 
  int x, y, z = 0;
@@ -240,69 +240,66 @@ Matrix44<double> viewTransform(Vec3<double> eye,double azimuth,double elevation)
 	 return (c.x - a.x) * (b.y - a.y) - (c.y - a.y) * (b.x - a.x);
  }
  Vec3<double> rect[3]{
-	 Vec3<double>(13.,34.,800.),Vec3<double>(29.,-15.,44.),Vec3<double>(-48.,-10.,82.) };
+	 Vec3<double>(13.,34.,114.),Vec3<double>(29.,-15.,44.),Vec3<double>(-48.,-10.,82.) };
 
  void renderTriangle(Vec3<double> &v0,  Vec3<double> &v1,  Vec3<double> &v2, COLORREF c0, COLORREF c1, COLORREF c2, Vec3<double>st0, Vec3<double>st1, Vec3<double>st2)
  {
-if( PERSP_CORRECT)
-{ 
-	
 
-	 c0 = RGB(GetRValue(c0) / v0.z, GetGValue(c0) / v0.z, GetBValue(c0) / v0.z);
-	 c1 = RGB(GetRValue(c1) / v1.z, GetGValue(c1) / v1.z, GetBValue(c1) / v1.z);
-	 c2 = RGB(GetRValue(c2) / v2.z, GetGValue(c2) / v2.z, GetBValue(c2) / v2.z);
+	v0.x = v0.x / v0.w;
+	v0.y = v0.y / v0.w;
+	v0.z = v0.z / v0.w;
 
-	 st0.x /= v0.z , st0.y /= v0.z;
-	 st1.x /= v1.z, st1.y /= v1.z;
-	 st2.x /= v2.z, st2.y /= v2.z;
-	 v0.z = 1 / v0.z;
-	 v1.z = 1 / v1.z;
-	 v2.z = 1 / v2.z;
+	v1.x = v1.x / v1.w;
+	v1.y = v1.y / v1.w;
+	v1.z = v1.z / v1.w;
 
+	v2.x = v2.x / v2.w;
+	v2.y = v2.y / v2.w;
+	v2.z = v2.z / v2.w;
 
-}
+	 v0.w = 1 / v0.w;
+	 v1.w = 1 / v1.w;
+	 v2.w = 1 / v2.w;
+
+	 v0 = mapToScreen(v0);
+	 v1 = mapToScreen(v1);
+	 v2 = mapToScreen(v2);
 
 	 for (uint32_t j = 0; j < height; ++j) {
 		 for (uint32_t i = 0; i < width; ++i) {
 			 Vec3<double> p(i + 0.5f, j + 0.5f,0);
 		
 
-			 float w0 = edgeFunction(v1, v2, p);
-			 float w1 = edgeFunction(v2, v0, p);
-			 float w2 = edgeFunction(v0, v1, p);
-			 if (w0 <= 0 && w1 <= 0 && w2 <= 0) {
+			 double s0 = edgeFunction(v1, v2, p);
+			 double s1 = edgeFunction(v2, v0, p);
+			 double s2 = edgeFunction(v0, v1, p);
+			 if (s0 <= 0 && s1 <= 0 && s2 <= 0) {
 
-				 float area = edgeFunction(v0, v1, v2);
+				 double area = edgeFunction(v0, v1, v2);
 				 
-				 w0 /= area;
-				 w1 /= area;
-				 w2 /= area;
-				 COLORREF r = w0 * GetRValue(c0) + w1 * GetRValue(c1) + w2 * GetRValue(c2);
-				 COLORREF g = w0 * GetGValue(c0) + w1 * GetGValue(c1) + w2 * GetGValue(c2);
-				 COLORREF b = w0 * GetBValue(c0) + w1 * GetBValue(c1) + w2 * GetBValue(c2);
-				 float s = w0 * st0.x + w1 * st1.x + w2 * st2.x;
-				 float t = w0 * st0.y + w1 * st1.y + w2 * st2.y;
-				 if (PERSP_CORRECT)
-				 {
-					 float z = 1 / (w0 * v0.z + w1 * v1.z + w2 * v2.z);
-					
-					 r *= z, g *= z, b *= z;
-					 s *= z, t *= z;
-				 }
-				 const int M = 10;
-				 // checkerboard pattern
-				 float p = (fmod(s * M, 1.0) > 0.5) ^ (fmod(t * M, 1.0) < 0.5);
+				 s0 /= area;
+				 s1 /= area;
+				 s2 /= area;
+				 float r = s0 * (GetRValue(c0)/255.f)*v0.w + s1 * (GetRValue(c1)/255.f) *v1.w + s2 * (GetRValue(c2)/255.f) * v2.w;
+				 float g = s0 * (GetGValue(c0)/255.f)*v0.w + s1 * (GetGValue(c1)/255.f) * v1.w + s2 * (GetGValue(c2)/255.f) * v2.w;
+				 float b = s0 * (GetBValue(c0) /255.f)*v0.w + s1 * (GetBValue(c1)/255.f) * v1.w + s2 * (GetBValue(c2)/255.f) * v2.w;
 
-				 putpixel(i, j, RGB(p*255, p * 255, p * 255));
-				 //framebuffer[j * width + i][0] = (unsigned char)(r * 255);
-				 //framebuffer[j * width + i][1] = (unsigned char)(g * 255);
-				 //framebuffer[j * width + i][2] = (unsigned char)(b * 255);
+				// float s = w0 * st0.x + w1 * st1.x + w2 * st2.x;
+				 //float t = w0 * st0.y + w1 * st1.y + w2 * st2.y;	
+					 // put this on z-buffer;
+				double w= 1/(s0 * v0.w + s1 *v1.w + s2 *v2.w);		
+				r *= w, g *= w, b *= w;
+					 //s *= z, t *= z;
+					 
+				  
+				 putpixel(i, j, RGB(r*255, g*255, b*255));
+		
 			 }
 		 }
 	 }
  }
  void GetDesktopResolution(int& horizontal, int& vertical)
- {
+ {   
 	 RECT desktop;
 	 // Get a handle to the desktop window
 	 const HWND hDesktop = GetDesktopWindow();
@@ -337,7 +334,7 @@ if( PERSP_CORRECT)
 		// Matrix44<double> viewT = viewTransform(Vec3<double>(2.5 +x, 3+y,3.5+z), Vec3<double>(-1., -1., 2.), Vec3<double>(-1., -1., -1.));
 
 		 //Matrix44<double> orthoT = orthoTransform(-100, 100, -500, 500, 0, 500);
-		 Matrix44<double> persT = perspTransform(M_PI / 6,(double)width/height, 1., 100.);
+		 Matrix44<double> persT = perspTransform(M_PI / 6,(double)width/height, 1., 200.);
 		
 		
 		 Matrix44<double> rotate;
@@ -357,10 +354,10 @@ if( PERSP_CORRECT)
 		 //cout << " projB:" << projB.toString() << endl;
 
 		
-		 Vec3<double> rect_proj[4];
+		 Vec3<double> clip_points[4];
 		 for (int i = 0; i < 3; i++)
 		 {
-			 rect_proj[i] = mapToScreen(viewPers.transformPoint(rect[i]));
+			 clip_points[i] = viewPers.transformPoint(rect[i]);
 		 }
 		// cout << "A:" << A.toString();
 		// cout << "B:" << B.toString();
@@ -371,7 +368,7 @@ if( PERSP_CORRECT)
 		 //cout << "projB:" << rect_proj[1].toString();
 		 //cout << "projC:" << rect_proj[2].toString();
 		
-		 renderTriangle(rect_proj[0], rect_proj[1], rect_proj[2],0xff0000, 0x00ff00, 0x0000ff,Vec3<double>(0,1,0), Vec3<double>(1, 0, 0), Vec3<double>(0, 0, 0));
+		 renderTriangle(clip_points[0], clip_points[1], clip_points[2],0xff0000, 0x00ff00, 0x0000ff,Vec3<double>(0,1,0), Vec3<double>(1, 0, 0), Vec3<double>(0, 0, 0));
 		// bhm_line(rect_proj[0].x, rect_proj[0].y, rect_proj[1].x, rect_proj[1].y, 0xffff00);
 		// bhm_line(rect_proj[1].x, rect_proj[1].y, rect_proj[2].x, rect_proj[2].y, 0xffff00);
 		 //bhm_line(rect_proj[2].x, rect_proj[2].y, rect_proj[0].x, rect_proj[0].y, 0xffff00);

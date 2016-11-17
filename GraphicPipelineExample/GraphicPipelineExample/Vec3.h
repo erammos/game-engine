@@ -6,10 +6,12 @@ class Vec3
 {
 public:
 	// 3 most basic ways of initializing a vector
-	Vec3() : x(T(0)), y(T(0)), z(T(0)) {}
+	Vec3() : x(T(0)), y(T(0)), z(T(0)),w(T(1)) {}
 	Vec3(T &xx) : x(xx), y(xx), z(xx) {}
-	Vec3(T xx, T yy, T zz) : x(xx), y(yy), z(zz) {}
-public: T x, y, z;
+	Vec3(T xx, T yy, T zz) : x(xx), y(yy), z(zz), w(1) {}
+	Vec3(T xx, T yy, T zz, T ww) : x(xx), y(yy), z(zz), w(ww) {}
+
+public: T x, y, z, w;
 
 	T inline length()
 	{
