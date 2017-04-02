@@ -11,13 +11,13 @@ namespace Engine {
 			VertexData tl;
 			VertexData tr;
 			VertexData br;
-			int texture_id;
 		};
 
 		class SpriteComponent : public GraphicsComponent
 		{
 			Rect rect;
 			Rect outRect;
+			void init(float, float, float, float);
 		public:
 		
 			SpriteComponent(float x, float y, float width, float height, Color c);

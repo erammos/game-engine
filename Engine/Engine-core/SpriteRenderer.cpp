@@ -20,7 +20,7 @@ void Engine::Graphics::SpriteRenderer::init()
 	glVertexAttribPointer(SHADER_VERTEX_ATTRIB, 4, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const GLvoid *)0);
 	glVertexAttribPointer(SHADER_COLOR_ATTRIB, 4, GL_FLOAT, GL_FALSE, VERTEX_SIZE,(const GLvoid *)(offsetof(VertexData,VertexData::color)));
 	glVertexAttribPointer(SHADER_UV_ATTRIB, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const GLvoid *)(offsetof(VertexData, VertexData::uv)));
-	glVertexAttribPointer(SHADER_TEXTURE_ID_ATTRIB, 1, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const GLvoid *)(offsetof(VertexData, VertexData::tid)));
+	glVertexAttribPointer(SHADER_TEXTURE_ID_ATTRIB, 1, GL_INT, GL_FALSE, VERTEX_SIZE, (const GLvoid *)(offsetof(VertexData, VertexData::tid)));
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -44,6 +44,15 @@ void Engine::Graphics::SpriteRenderer::init()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, TOTAL_INDICES_SIZE * sizeof(GLushort), indices, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE1);
+	/*for (int i = 0; i < 2; i++)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+		TextureManager::Inst()->BindTexture(i);
+
+		//(glBindTExture(GL_TEXTURE_2D, TextureManager::Inst);
+	}*/
 
 }
 
@@ -74,13 +83,12 @@ void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)
 
 	Color color = sprite->GetColor();
 	Rect rect = sprite->GetRect();
-	GLuint tid=rect.texture_id;
-	float ts = 0.0f;
+	
 	//if (tid > 0)
 	//{
 		
 	/*bool found = m_texID.find(tid) != m_texID.end();
-
+	`
 			if (!found)
 			{
 				End();
@@ -90,10 +98,10 @@ void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)
 			}
 	//}*/
 	VertexData * p = &rect.bl;
-
+	//TextureManager::Inst()->BindTexture(p->tid);
 	for (int i = 0; i < 4; i++)
 	{
-		m_buffer->vertex = p->vertex;
+ 		m_buffer->vertex = p->vertex;
 		m_buffer->color = color;
 		m_buffer->uv = p->uv;
 		m_buffer->tid = p->tid;
@@ -105,17 +113,13 @@ void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)
 }
 void Engine::Graphics::SpriteRenderer::End()
 {
+	
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	for (int i = 0; i < 10; i++)
-	{
-		glActiveTexture(GL_TEXTURE0+i);
-		TextureManager::Inst()->BindTexture(i);
-		
-		//(glBindTExture(GL_TEXTURE_2D, TextureManager::Inst);
-	}
+
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+	
 	glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_SHORT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -125,6 +129,8 @@ void Engine::Graphics::SpriteRenderer::End()
 void Engine::Graphics::SpriteRenderer::SetShaderId(GLuint shader_id)
 {
 	this->shader_id = shader_id;
+	glUniform1i(glGetUniformLocation(shader_id, "tex[0]"), 0);
+	glUniform1i(glGetUniformLocation(shader_id, "tex[1]"), 1);
 }
 
 void Engine::Graphics::SpriteRenderer::SetModelViewMatrix(Engine::Math::Mat4f& matrix)

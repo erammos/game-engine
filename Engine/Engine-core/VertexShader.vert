@@ -2,7 +2,7 @@
 layout(location = 0) in vec4 model_position;
 layout(location = 1) in vec4 model_color;
 layout(location = 2) in vec2 model_texCoord;
-layout(location = 3) in float tid;
+layout(location = 3) in int tid;
 
 uniform mat4 proj_matrix;
 uniform mat4 model_matrix;
@@ -11,7 +11,7 @@ out DATA
    vec4 color;
    vec4 pos;
    vec2 texCoord;
-   float tid;
+   int tid;
 } vs_out;
 
 

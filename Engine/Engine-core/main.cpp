@@ -51,42 +51,36 @@ int main()
 	//glUniformMatrix4fv(glGetUniformLocation(shader.program_id, "model_matrix"), 1, GL_FALSE, Mat4f::identity().values);
 
 	GameObject * world = new GameObject();
-	world->AddGraphicComponent(new SpriteComponent(0, 0, 40, 40, Color(1.0f, 0.f, 1.f, 1.f)));
+	world->AddGraphicComponent(new SpriteComponent("temp.png"));
 
-	//world->LocalTransform= Mat4f::translation(0, 0, 0);
-	world->LocalTransform = Mat4f::scale(1.0, 1.0, 1.0);
+	world->LocalTransform= Mat4f::translation(0, 0, 0);
+	world->LocalTransform = Mat4f::scale(0.2, 0.2, 0.2);
+	
 	GameObject * obj1 = new GameObject();
-	obj1->AddGraphicComponent(new SpriteComponent(0, 0, 5, 5, Color(.0f, 0.f, 1.f, 1.f)));
-
-	obj1->LocalTransform = Mat4f::translation(10, 0, 0);
+	obj1->AddGraphicComponent(new SpriteComponent("temp.png"));
+	obj1->LocalTransform = Mat4f::translation(10, 0, 0) * Mat4f::scale(0.2, 0.2, 0.2);
+	//obj1->LocalTransform =;
 	
 
-	GameObject * obj3 = new GameObject();
-	obj3->AddGraphicComponent(new SpriteComponent(0, 0, 5, 5, Color(.0f, 1.f, 1.f, 1.f)));
-	obj3->LocalTransform = Mat4f::translation(10, 10, 0);
+	
 
 
-	for (int i = 0; i < 5; i++)
-	{
-		GameObject * obj = new GameObject();
-		obj->AddGraphicComponent(new SpriteComponent(0, 0, 1, 1, Color(0.1f, 0.5f, 1.f, 0.8f)));
-		obj->LocalTransform = Mat4f::translation(i, 1, 0);
-		obj3->Add(obj);
-	}
+	
 	world->Add(obj1);
-	world->Add(obj3);
+	
 	// 0, GL_RBG
 
 	//glActiveTexture(GL_TEXTURE0);
-	TextureManager::Inst()->LoadTexture("dog.jpg",0);
+	//TextureManager::Inst()->LoadTexture("dog.jpg",0);
 	
-	TextureManager::Inst()->BindTexture(0);
-	GLint texID[] 
-	{
-		1,2,3,4,5,7,8,9
-	}
-	glUniform1i(glGetUniformLocation(shader.program_id, "tex"), 0);
-	glUniform1i(glGetUniformLocation(shader.program_id, "tex"), texIDS,10);
+	//TextureManager::Inst()->BindTexture(0);
+	//GLint texID[] 
+	//{
+		//1,2,3,4,5,7,8,9
+	//}
+	//glUniform1i(glGetUniformLocation(shader.program_id, "tex"), 0);
+	//glUniform1i(glGetUniformLocation(shader.program_id, "tex"), texIDS,10);
+	
 	Timer time;
 	float timer = 0;
 	unsigned int frames = 0;
@@ -114,7 +108,7 @@ int main()
 		}
 	}
 	 
-	
+	delete world;
 	return 0;
 
 }

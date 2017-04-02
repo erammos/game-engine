@@ -6,6 +6,15 @@ Engine::Graphics::GameObject::GameObject()
 	parent = NULL;
 }
 
+Engine::Graphics::GameObject::~GameObject()
+{
+	delete graphics;
+	for (int i = 0; i < childs.size(); i++)
+	{
+		delete childs[i];
+	}
+}
+
 void Engine::Graphics::GameObject::Draw(Renderer * renderer)
 {
 	m_dirty = m_dirty |= ((parent) ? parent->isDirty() : false);

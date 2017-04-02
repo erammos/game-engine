@@ -23,6 +23,7 @@ namespace Engine {
 		   Mat4f LocalTransform = Mat4f::identity();
 		public:
 			GameObject();
+			~GameObject();
 			void Draw(Renderer * renderer);
 
 			void Add(GameObject * gameobject);

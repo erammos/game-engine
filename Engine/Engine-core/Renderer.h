@@ -12,7 +12,7 @@ namespace Engine {
 			Vec3f vertex;
 			Color color;
 			Vec2f uv;
-			GLuint tid;
+			int tid;
 			VertexData() {};
 			
 		};
