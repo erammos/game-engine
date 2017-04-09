@@ -52,7 +52,8 @@ int TextureManager::LoadTexture(const char* filename, int& width, int& height)
 }
 bool TextureManager::LoadTexture(const char* filename,  const unsigned int texID, int& width, int& height, GLenum image_format, GLint internal_format, GLint level, GLint border)
 {
-	//image format
+	
+	
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	//pointer to the image, once loaded
 	FIBITMAP *dib(0);
@@ -99,16 +100,15 @@ bool TextureManager::LoadTexture(const char* filename,  const unsigned int texID
 	//bind to the new texture ID
 	glBindTexture(GL_TEXTURE_2D, gl_texID);
 	//store the texture data for OpenGL use
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	
 	glTexImage2D(GL_TEXTURE_2D, level, internal_format, width, height,
 		border, image_format, GL_UNSIGNED_BYTE, bits);
-
+	glGenerateMipmap(GL_TEXTURE_2D);
 	//Free FreeImage's copy of the data
 	FreeImage_Unload(dib);
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 	//return success
 	return true;
 }

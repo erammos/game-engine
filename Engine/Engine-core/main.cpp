@@ -41,6 +41,7 @@ int main()
 	//Sprite sprite2(5, 3, 2, 3, Color(0.2f, 0, 1.0f, 0.5f));
 
 
+	
 
 	Shader shader("VertexShader.vert", "FragmentShader.frag");
 	shader.enable();
@@ -49,30 +50,60 @@ int main()
 	renderer.SetProjectionMatrix(Mat4f::ortho(0.0, 80.0f, 0.0f, 60.0f, 1.0f, -1.0f));
 
 	//glUniformMatrix4fv(glGetUniformLocation(shader.program_id, "model_matrix"), 1, GL_FALSE, Mat4f::identity().values);
-
-	GameObject * world = new GameObject();
-	world->AddGraphicComponent(new SpriteComponent("temp.png"));
-
-	world->LocalTransform= Mat4f::translation(0, 0, 0);
-	world->LocalTransform = Mat4f::scale(0.2, 0.2, 0.2);
-	
-	GameObject * obj1 = new GameObject();
-	obj1->AddGraphicComponent(new SpriteComponent("temp.png"));
-	obj1->LocalTransform = Mat4f::translation(10, 0, 0) * Mat4f::scale(0.2, 0.2, 0.2);
-	//obj1->LocalTransform =;
-	
+	//glActiveTexture(GL_TEXTURE0);
 
 	
 
+	
+	
+	
+
+	//glUniform1i(glGetUniformLocation(shader.program_id, "tex[1]"), 1);
+
 
 	
-	world->Add(obj1);
+	//world->Add(obj1);
 	
 	// 0, GL_RBG
 
-	//glActiveTexture(GL_TEXTURE0);
-	//TextureManager::Inst()->LoadTexture("dog.jpg",0);
 	
+
+	glUniform1i(glGetUniformLocation(shader.program_id, "tex0"), 0);
+	glUniform1i(glGetUniformLocation(shader.program_id, "tex1"), 1);
+	glUniform1i(glGetUniformLocation(shader.program_id, "tex2"), 2);
+	
+    // TextureManager::Inst()->LoadTexture("red.png",0,width,height);
+	 GameObject * world = new GameObject();
+	
+	 world->AddGraphicComponent(new SpriteComponent("pink.png"));
+
+	 world->LocalTransform = Mat4f::translation(0, 0, 0);
+	 world->LocalTransform = Mat4f::scale(0.2, 0.2, 0.2);
+
+	 GameObject * group = new GameObject();
+	
+
+	 for (int i = 0; i < 2; i++)
+	 {
+		 GameObject * obj = new GameObject();
+		 obj->AddGraphicComponent(new SpriteComponent("red.png"));
+		 obj->LocalTransform = Mat4f::translation(i*2, 0, 0) * Mat4f::scale(0.2, 0.2, 0.2);
+		 group->Add(obj);
+	 }
+	 world->Add(group);
+	
+	 glActiveTexture(GL_TEXTURE0);
+	 TextureManager::Inst()->BindTexture(0);
+	 glActiveTexture(GL_TEXTURE1);
+	 TextureManager::Inst()->BindTexture(1);
+	 glActiveTexture(GL_TEXTURE2);
+	 TextureManager::Inst()->BindTexture(2);
+	// glActiveTexture(GL_TEXTURE0);
+	 //glBindTexture(GL_TEXTURE_2D, 0);
+	 //TextureManager::Inst()->BindTexture(1);
+	 //TextureManager::Inst()->BindTexture(1);
+	// TextureManager::Inst()->BindTexture(1);
+
 	//TextureManager::Inst()->BindTexture(0);
 	//GLint texID[] 
 	//{
@@ -93,6 +124,8 @@ int main()
 
 		window.clear();
 		renderer.Begin();
+		//world->SetTransform(Mat4f::translation((window.mouse_x/800.0f)*80.0f, 60.0f-((window.mouse_y)/600.0f)*60.0f, 1)* Mat4f::scale(0.2, 0.2, 0.2));
+		//group->SetTransform(Mat4f::translation((window.mouse_x / 800.0f)*80.0f, 60.0f - ((window.mouse_y) / 600.0f)*60.0f, 1));
 		//world->SetTransform(Mat4f::translation((window.mouse_x/800.0f)*80.0f, 60.0f-((window.mouse_y)/600.0f)*60.0f, 1));
 		world->Draw(&renderer);
 		renderer.End();

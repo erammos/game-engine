@@ -29,7 +29,7 @@ SpriteComponent::SpriteComponent(float x ,float y, float width, float height, Co
 	init(x, y, width, height);
 }
 
-SpriteComponent::SpriteComponent(const char * imageName) : GraphicsComponent(Color(0,0,0,1))
+SpriteComponent::SpriteComponent(const char * imageName) : GraphicsComponent(Color(0,0,0,0))
 {
 	int width(0);
 	int height(0);

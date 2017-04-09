@@ -44,8 +44,9 @@ void Engine::Graphics::SpriteRenderer::init()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, TOTAL_INDICES_SIZE * sizeof(GLushort), indices, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	glActiveTexture(GL_TEXTURE0);
-	glActiveTexture(GL_TEXTURE1);
+	
+	
+	//glActiveTexture(GL_TEXTURE1);
 	/*for (int i = 0; i < 2; i++)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
@@ -84,21 +85,8 @@ void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)
 	Color color = sprite->GetColor();
 	Rect rect = sprite->GetRect();
 	
-	//if (tid > 0)
-	//{
-		
-	/*bool found = m_texID.find(tid) != m_texID.end();
-	`
-			if (!found)
-			{
-				End();
-				Begin();
-				m_texID[tid] = tid;
 
-			}
-	//}*/
 	VertexData * p = &rect.bl;
-	//TextureManager::Inst()->BindTexture(p->tid);
 	for (int i = 0; i < 4; i++)
 	{
  		m_buffer->vertex = p->vertex;
@@ -119,7 +107,6 @@ void Engine::Graphics::SpriteRenderer::End()
 
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	
 	glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_SHORT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -129,8 +116,7 @@ void Engine::Graphics::SpriteRenderer::End()
 void Engine::Graphics::SpriteRenderer::SetShaderId(GLuint shader_id)
 {
 	this->shader_id = shader_id;
-	glUniform1i(glGetUniformLocation(shader_id, "tex[0]"), 0);
-	glUniform1i(glGetUniformLocation(shader_id, "tex[1]"), 1);
+	
 }
 
 void Engine::Graphics::SpriteRenderer::SetModelViewMatrix(Engine::Math::Mat4f& matrix)
