@@ -16,8 +16,7 @@ namespace Engine {
 #define TOTAL_INDICES_SIZE MAX_SPRITES * 6
 #define SHADER_VERTEX_ATTRIB 0
 #define SHADER_COLOR_ATTRIB 1
-#define SHADER_UV_ATTRIB 2
-#define	SHADER_TEXTURE_ID_ATTRIB 3
+#define SHADER_TEX_ATTRIB 2
 
 	
 		class SpriteRenderer: public Renderer

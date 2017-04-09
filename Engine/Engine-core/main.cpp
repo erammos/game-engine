@@ -87,17 +87,17 @@ int main()
 	 {
 		 GameObject * obj = new GameObject();
 		 obj->AddGraphicComponent(new SpriteComponent("red.png"));
-		 obj->LocalTransform = Mat4f::translation(i*2, 0, 0) * Mat4f::scale(0.2, 0.2, 0.2);
+		 obj->LocalTransform = Mat4f::translation(i*100, 0, 0) * Mat4f::scale(0.2, 0.2, 0.2);
 		 group->Add(obj);
 	 }
 	 world->Add(group);
 	
-	 glActiveTexture(GL_TEXTURE0);
-	 TextureManager::Inst()->BindTexture(0);
-	 glActiveTexture(GL_TEXTURE1);
-	 TextureManager::Inst()->BindTexture(1);
-	 glActiveTexture(GL_TEXTURE2);
-	 TextureManager::Inst()->BindTexture(2);
+	// glActiveTexture(GL_TEXTURE0);
+	 //TextureManager::Inst()->BindTexture(0);
+	// glActiveTexture(GL_TEXTURE1);
+	 //TextureManager::Inst()->BindTexture(1);
+	// glActiveTexture(GL_TEXTURE2);
+	// TextureManager::Inst()->BindTexture(2);
 	// glActiveTexture(GL_TEXTURE0);
 	 //glBindTexture(GL_TEXTURE_2D, 0);
 	 //TextureManager::Inst()->BindTexture(1);

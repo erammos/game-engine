@@ -14,13 +14,10 @@ void Engine::Graphics::SpriteRenderer::init()
 	glBufferData(GL_ARRAY_BUFFER, TOTAL_BUFFER_SIZE, NULL, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(SHADER_VERTEX_ATTRIB);
 	glEnableVertexAttribArray(SHADER_COLOR_ATTRIB);
-	glEnableVertexAttribArray(SHADER_UV_ATTRIB);
-	glEnableVertexAttribArray(SHADER_TEXTURE_ID_ATTRIB);
-
+	glEnableVertexAttribArray(SHADER_TEX_ATTRIB);
 	glVertexAttribPointer(SHADER_VERTEX_ATTRIB, 4, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const GLvoid *)0);
 	glVertexAttribPointer(SHADER_COLOR_ATTRIB, 4, GL_FLOAT, GL_FALSE, VERTEX_SIZE,(const GLvoid *)(offsetof(VertexData,VertexData::color)));
-	glVertexAttribPointer(SHADER_UV_ATTRIB, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const GLvoid *)(offsetof(VertexData, VertexData::uv)));
-	glVertexAttribPointer(SHADER_TEXTURE_ID_ATTRIB, 1, GL_INT, GL_FALSE, VERTEX_SIZE, (const GLvoid *)(offsetof(VertexData, VertexData::tid)));
+	glVertexAttribPointer(SHADER_TEX_ATTRIB, 4, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const GLvoid *)(offsetof(VertexData, VertexData::tex)));
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -91,8 +88,7 @@ void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)
 	{
  		m_buffer->vertex = p->vertex;
 		m_buffer->color = color;
-		m_buffer->uv = p->uv;
-		m_buffer->tid = p->tid;
+		m_buffer->tex = p->tex;
 		p++;
 		m_buffer++;
 

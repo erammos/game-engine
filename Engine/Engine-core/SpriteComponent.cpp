@@ -12,10 +12,7 @@ void Engine::Graphics::SpriteComponent::init(float x, float y, float width, floa
 	rect.tr.vertex = Vec3f(x + width, y + height, 1);
 	rect.br.vertex = Vec3f(x + width, y, 1);
 
-	rect.bl.uv = Vec2f(0, 0);
-	rect.tl.uv = Vec2f(0, 1);
-	rect.tr.uv = Vec2f(1, 1);
-	rect.br.uv = Vec2f(1, 0);
+
 
 	memcpy(&outRect.bl, &rect.bl, sizeof(VertexData));
 	memcpy(&outRect.tl, &rect.tl, sizeof(VertexData));
@@ -35,10 +32,11 @@ SpriteComponent::SpriteComponent(const char * imageName) : GraphicsComponent(Col
 	int height(0);
 	int id=TextureManager::Inst()->LoadTexture(imageName, width, height);
 
-	rect.bl.tid = id;
-	rect.tl.tid = id;
-	rect.tr.tid = id;
-	rect.br.tid = id;
+	rect.bl.tex = Vec3f(0, 0, id);
+	rect.tl.tex = Vec3f(0, 1, id);
+	rect.tr.tex = Vec3f(1, 1, id);
+	rect.br.tex = Vec3f(1, 0, id);
+
 
 	init(0, 0, width, height);
 
@@ -47,7 +45,7 @@ SpriteComponent::SpriteComponent(const char * imageName) : GraphicsComponent(Col
 
 SpriteComponent::~SpriteComponent()
 {
-	TextureManager::Inst()->UnloadTexture(rect.bl.tid);
+	TextureManager::Inst()->UnloadTexture(rect.br.tex.z);
 }
 void SpriteComponent::Update()
 {

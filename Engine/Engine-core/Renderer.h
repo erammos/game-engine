@@ -11,8 +11,7 @@ namespace Engine {
 		{
 			Vec3f vertex;
 			Color color;
-			Vec2f uv;
-			int tid;
+			Vec3f tex;
 			VertexData() {};
 			
 		};
