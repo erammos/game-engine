@@ -10,20 +10,18 @@ in DATA
   vec4 tex; 
 } fs_in;
 
-uniform sampler2D tex0;
-uniform sampler2D tex1;
-uniform sampler2D tex2;
+uniform sampler2D tex[31];
+
 
 void main(){
 
-   // float intesity= 10.0 / length(fs_in.pos.xy- light_pos);
+    float intesity= 50.0 / length(fs_in.pos.xy- light_pos);
    
 	
 	highp int tid = int( fs_in.tex.z);
 	
-	if(tid == 0)color = vec4(1,0,0,1);
-	if(tid == 1)color = vec4(1,1,0,1);
-	if(tid == 2)color = vec4(1,0,1,1);
+	color = texture(tex[tid],fs_in.tex.xy) *1;
+
 	
   
 

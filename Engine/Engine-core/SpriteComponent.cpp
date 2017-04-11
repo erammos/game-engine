@@ -8,7 +8,7 @@ using namespace Graphics;
 void Engine::Graphics::SpriteComponent::init(float x, float y, float width, float height)
 {
 	rect.bl.vertex = Vec3f(x, y, 1);
-	rect.tl.vertex = Vec3f(x, y + width, 1);
+	rect.tl.vertex = Vec3f(x, y + height, 1);
 	rect.tr.vertex = Vec3f(x + width, y + height, 1);
 	rect.br.vertex = Vec3f(x + width, y, 1);
 
@@ -26,7 +26,7 @@ SpriteComponent::SpriteComponent(float x ,float y, float width, float height, Co
 	init(x, y, width, height);
 }
 
-SpriteComponent::SpriteComponent(const char * imageName) : GraphicsComponent(Color(0,0,0,0))
+SpriteComponent::SpriteComponent(const char * imageName) : GraphicsComponent(Color(0,0,0,1))
 {
 	int width(0);
 	int height(0);

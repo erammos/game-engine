@@ -105,7 +105,10 @@ bool TextureManager::LoadTexture(const char* filename,  const unsigned int texID
 	
 	glTexImage2D(GL_TEXTURE_2D, level, internal_format, width, height,
 		border, image_format, GL_UNSIGNED_BYTE, bits);
-	glGenerateMipmap(GL_TEXTURE_2D);
+   // glGenerateMipmap(GL_TEXTURE_2D);
+
+	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	//Free FreeImage's copy of the data
 	FreeImage_Unload(dib);
 	glBindTexture(GL_TEXTURE_2D, 0);

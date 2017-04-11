@@ -42,15 +42,8 @@ void Engine::Graphics::SpriteRenderer::init()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 	
-	
-	//glActiveTexture(GL_TEXTURE1);
-	/*for (int i = 0; i < 2; i++)
-	{
-		glActiveTexture(GL_TEXTURE0 + i);
-		TextureManager::Inst()->BindTexture(i);
 
-		//(glBindTExture(GL_TEXTURE_2D, TextureManager::Inst);
-	}*/
+
 
 }
 
@@ -73,6 +66,11 @@ void Engine::Graphics::SpriteRenderer::Begin()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	m_buffer = (VertexData *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+	for (int i = 0; i < TextureManager::Inst()->m_texID.size(); i++)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+		TextureManager::Inst()->BindTexture(i);
+	}
 }
 
 void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)
@@ -97,9 +95,9 @@ void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)
 }
 void Engine::Graphics::SpriteRenderer::End()
 {
-	
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
@@ -112,6 +110,13 @@ void Engine::Graphics::SpriteRenderer::End()
 void Engine::Graphics::SpriteRenderer::SetShaderId(GLuint shader_id)
 {
 	this->shader_id = shader_id;
+
+	int v[32];
+	for (int i = 0; i < 31; i++)
+	{
+		v[i] = i;
+	}
+	glUniform1iv(glGetUniformLocation(shader_id, "tex"), 32, v);
 	
 }
 
