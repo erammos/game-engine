@@ -14,6 +14,17 @@ Engine::Graphics::GameObject::~GameObject()
 		delete childs[i];
 	}
 }
+void Engine::Graphics::GameObject::Init()
+{
+	
+	if (graphics)graphics->Init();
+	for (int i = 0; i < childs.size(); i++)
+	{
+		childs[i]->Init();
+	}
+
+	
+}
 
 void Engine::Graphics::GameObject::Draw(Renderer * renderer)
 {
@@ -21,7 +32,7 @@ void Engine::Graphics::GameObject::Draw(Renderer * renderer)
 
 	if (m_dirty)
 	{
-		std::cout << "Rendering" << std::endl;
+		//std::cout << "Rendering" << std::endl;
 		WorldTransform = (parent) ? parent->WorldTransform * LocalTransform : LocalTransform;
 		if (graphics)graphics->Update();
 	}

@@ -15,9 +15,14 @@ namespace Engine {
 
 		class SpriteComponent : public GraphicsComponent
 		{
+			int x;
+			int y;
+			int width = 0;
+			int height = 0;
+			const char * imageName;
 			Rect rect;
 			Rect outRect;
-			void init(float, float, float, float);
+			
 		public:
 		
 			SpriteComponent(float x, float y, float width, float height, Color c);
@@ -28,6 +33,7 @@ namespace Engine {
 			inline const Rect& GetRect() const { return outRect; }
 			void Update() override;
 			void  Draw(Renderer * renderer) override;
+			void  Init() override;
 
 		};
 	}

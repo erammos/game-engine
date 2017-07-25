@@ -24,6 +24,60 @@ TextureManager::TextureManager()
 	#ifdef FREEIMAGE_LIB
 		FreeImage_Initialise();
 	#endif
+
+}
+bool TextureManager::CreateAtlas()
+{
+	
+	glActiveTexture(GL_TEXTURE0);
+	glGenTextures(1, &atlas_tex);
+	glBindTexture(GL_TEXTURE_2D, atlas_tex);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, atlas_width, atlas_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	
+	int x = 0;
+	for (auto const& file : textures)
+	{
+		std::string filename = file.first;
+		
+		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+		//pointer to the image, once loaded
+		FIBITMAP *dib(0);
+		//pointer to the image data
+		BYTE* bits(0);
+
+		fif = FreeImage_GetFileType(filename.c_str(), 0);	
+		if (fif == FIF_UNKNOWN)
+			fif = FreeImage_GetFIFFromFilename(filename.c_str());
+		
+		if (fif == FIF_UNKNOWN)
+			return false;
+
+		if (FreeImage_FIFSupportsReading(fif))
+			dib = FreeImage_Load(fif, filename.c_str());
+	
+		if (!dib)
+			return false;
+
+		//retrieve the image data
+		bits = FreeImage_GetBits(dib);
+		//get the image width and height
+	   int	width = FreeImage_GetWidth(dib);
+       int height = FreeImage_GetHeight(dib);
+
+	   if (bits == 0 || (width == 0) || (height == 0))
+		   return false;
+	   glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, bits);
+	
+	   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	   textures[filename] = x / (double) atlas_width;
+	   x += width;
+	   FreeImage_Unload(dib);
+	}
+
+
+
 }
 
 //these should never be called
@@ -49,6 +103,47 @@ int TextureManager::LoadTexture(const char* filename, int& width, int& height)
 		return id;
 	}
 	return -1;
+}
+bool TextureManager::AddTexture(const char* filename, int& width, int& height)
+{
+	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+	//pointer to the image, once loaded
+	FIBITMAP *dib(0);
+	//pointer to the image data
+	BYTE* bits(0);
+	//image width and height
+
+	//OpenGL's image ID to map to
+	GLuint gl_texID;
+
+	//check the file signature and deduce its format
+	fif = FreeImage_GetFileType(filename, 0);
+	//if still unknown, try to guess the file format from the file extension
+	if (fif == FIF_UNKNOWN)
+		fif = FreeImage_GetFIFFromFilename(filename);
+	//if still unkown, return failure
+	if (fif == FIF_UNKNOWN)
+		return false;
+
+	//check that the plugin has reading capabilities and load the file
+	if (FreeImage_FIFSupportsReading(fif))
+		dib = FreeImage_Load(fif, filename);
+	//if the image failed to load, return failure
+	if (!dib)
+		return false;
+
+	width = FreeImage_GetWidth(dib);
+	height = FreeImage_GetHeight(dib);
+	
+	//if this somehow one of these failed (they shouldn't), return failure
+	if ((width == 0) || (height == 0))
+		return false;
+	atlas_width += width;
+	atlas_height = max(atlas_height, height);
+
+	textures[filename] = 0.0f;
+	FreeImage_Unload(dib);
+	return true;
 }
 bool TextureManager::LoadTexture(const char* filename,  const unsigned int texID, int& width, int& height, GLenum image_format, GLint internal_format, GLint level, GLint border)
 {
@@ -118,7 +213,6 @@ bool TextureManager::LoadTexture(const char* filename,  const unsigned int texID
 
 
 
-
 bool TextureManager::UnloadTexture(const unsigned int texID)
 {
 	bool result(true);
@@ -141,13 +235,13 @@ bool TextureManager::BindTexture(const unsigned int texID)
 {
 	bool result(true);
 	//if this texture ID mapped, bind it's texture as current
-	if(m_texID.find(texID) != m_texID.end())
-		glBindTexture(GL_TEXTURE_2D, m_texID[texID]);
+	//if(m_texID.find(texID) != m_texID.end())
+		glBindTexture(GL_TEXTURE_2D, atlas_tex);
 	//otherwise, binding failed
-	else
-		result = false;
+	//else
+		//result = false;
 
-	return result;
+    return result;
 }
 
 void TextureManager::UnloadAllTextures()

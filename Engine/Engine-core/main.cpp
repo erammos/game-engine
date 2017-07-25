@@ -82,8 +82,8 @@ int main()
 
 	world->Add(tableLayout);
 
-	
-
+	TextureManager::Inst()->CreateAtlas();
+	world->Init();
 	//glUniform1i(glGetUniformLocation(shader.program_id, "tex[1]"), 1);
 
 
@@ -135,7 +135,7 @@ int main()
 	//{
 		//1,2,3,4,5,7,8,9
 	//}
-	//glUniform1i(glGetUniformLocation(shader.program_id, "tex"), 0);
+	//glUniform1i(glGetUniformLocation(shader.program_id, "tex[0]"), 0);
 	//glUniform1i(glGetUniformLocation(shader.program_id, "tex"), texIDS,10);
 	
 	Timer time;

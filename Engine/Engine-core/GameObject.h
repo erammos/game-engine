@@ -25,7 +25,7 @@ namespace Engine {
 			GameObject();
 			~GameObject();
 			void Draw(Renderer * renderer);
-
+			void Init();
 			void Add(GameObject * gameobject);
 			void AddGraphicComponent(GraphicsComponent * component);
 			void SetTransform(Mat4f transform);

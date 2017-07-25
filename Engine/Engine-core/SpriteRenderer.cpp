@@ -66,11 +66,10 @@ void Engine::Graphics::SpriteRenderer::Begin()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	m_buffer = (VertexData *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-	for (int i = 0; i < TextureManager::Inst()->m_texID.size(); i++)
-	{
-		glActiveTexture(GL_TEXTURE0 + i);
-		TextureManager::Inst()->BindTexture(i);
-	}
+
+	glActiveTexture(GL_TEXTURE0);
+	TextureManager::Inst()->BindTexture(0);
+	
 }
 
 void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)

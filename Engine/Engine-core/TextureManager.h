@@ -13,14 +13,21 @@
 #include <glew.h>
 #include "FreeImage.h"
 #include <map>
+#include "Vec3.h"
 
+using namespace Engine;
+using namespace Math;
 class TextureManager
 {
 public:
 	static TextureManager* Inst();
 	std::map<unsigned int, GLuint> m_texID;
 
+	std::map<std::string ,double> textures;
 
+	GLuint atlas_tex;
+	int atlas_width = 0;
+	int atlas_height = 0;
 	virtual ~TextureManager();
 
 	//load a texture an make it the current texture
@@ -33,6 +40,8 @@ public:
 		GLint level = 0,					//mipmapping level
 		GLint border = 0 );					//border size
 	int LoadTexture(const char* filename, int& width, int& height);
+	bool AddTexture(const char* filename, int& width, int& height);
+
 	//free the memory for a texture
 	bool UnloadTexture(const unsigned int texID);
 
@@ -45,6 +54,7 @@ public:
 	{
 		 return ids++;
 	}
+	bool CreateAtlas();
 protected:
 	TextureManager();
 	TextureManager(const TextureManager& tm);
