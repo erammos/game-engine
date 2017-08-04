@@ -106,6 +106,9 @@ int TextureManager::LoadTexture(const char* filename, int& width, int& height)
 }
 bool TextureManager::AddTexture(const char* filename, int& width, int& height)
 {
+
+		
+
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	//pointer to the image, once loaded
 	FIBITMAP *dib(0);
@@ -138,6 +141,10 @@ bool TextureManager::AddTexture(const char* filename, int& width, int& height)
 	//if this somehow one of these failed (they shouldn't), return failure
 	if ((width == 0) || (height == 0))
 		return false;
+
+	if (textures.find(filename) != textures.end()) 
+		return false;
+
 	atlas_width += width;
 	atlas_height = max(atlas_height, height);
 

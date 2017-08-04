@@ -20,13 +20,6 @@ void Engine::Graphics::SpriteComponent::Init()
 	rect.br.tex = Vec3f(offset_x + perc_width, 0, 0);
 	
 
-
-//	rect.bl.tex = Vec3f(0, 0, 0);
-//	rect.tl.tex = Vec3f(0, 1, 0);
-//	rect.tr.tex = Vec3f(1, 1, 0);
-//	rect.br.tex = Vec3f(1, 0, 0);
-
-
 	rect.bl.vertex = Vec3f(x, y, 1);
 	rect.tl.vertex = Vec3f(x, y + height, 1);
 	rect.tr.vertex = Vec3f(x + width, y + height, 1);
