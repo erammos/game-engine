@@ -30,6 +30,7 @@ namespace Engine {
 			void AddGraphicComponent(GraphicsComponent * component);
 			void SetTransform(Mat4f transform);
 			inline const bool isDirty() const { return m_dirty; }
+		
 		};
 
 

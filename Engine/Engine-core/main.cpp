@@ -60,20 +60,20 @@ int main()
 	GameObject * world = new GameObject();
 	world->LocalTransform = Mat4f::scale(1, 1, 1);
 	GameObject * tableLayout = new GameObject();
-	tableLayout->AddGraphicComponent(new SpriteComponent("gamelogo.png"));
+	tableLayout->AddGraphicComponent(new SpriteComponent("hero.png"));
 	
 
 	float scale = 0.5f;
 	GameObject * button1 = new GameObject();
-	button1->AddGraphicComponent(new SpriteComponent("button1.png"));
+	button1->AddGraphicComponent(new SpriteComponent("hero.png"));
 	button1->LocalTransform = Mat4f::translation(0, 0, 0) * Mat4f::scale(scale, scale, scale);
 
 	GameObject * button2 = new GameObject();
-	button2->AddGraphicComponent(new SpriteComponent("button2.png"));
+	button2->AddGraphicComponent(new SpriteComponent("hero.png"));
 	button2->LocalTransform = Mat4f::translation(702* scale, 0, 0)* Mat4f::scale(scale, scale, scale);
 	
 	GameObject * button3 = new GameObject();
-	button3->AddGraphicComponent(new SpriteComponent("button1.png"));
+	button3->AddGraphicComponent(new SpriteComponent("hero.png"));
 	button3->LocalTransform = Mat4f::translation(702*2 * scale, 0, 0)* Mat4f::scale(scale, scale, scale);
 	
 	tableLayout->Add(button1);
@@ -86,8 +86,12 @@ int main()
 	world->Init();
 	//glUniform1i(glGetUniformLocation(shader.program_id, "tex[1]"), 1);
 
+	ftgl::texture_atlas_t* m_atlas;
+	ftgl::texture_font_t* m_font;
 
-	
+	m_atlas = texture_atlas_new(512, 512, 1);
+	m_font =texture_font_new_from_file(m_atlas, 20, "fonts/Vera.ttf");
+
 	//world->Add(obj1);
 	
 	// 0, GL_RBG
@@ -142,6 +146,11 @@ int main()
 	float timer = 0;
 	unsigned int frames = 0;
 	float rotation = 0;
+	Vec2f pen;
+
+	char * text = "t";
+	Vec3f color = Vec3f(1, 0, 0);
+	texture_font_load_glyphs(m_font, text);
 	while (!window.closed())
 	{
 		
@@ -157,20 +166,23 @@ int main()
 		//937
 			//300
 		tableLayout->LocalTransform =  Mat4f::translation(937 / 2, 300 / 2, 0) * Mat4f::rotateZ(TO_RADIANS(rotation)) * Mat4f::translation(-937/2, -300/2, 0);
-		world->Draw(&renderer);
+	
+
+	//	pen.x = 5;
+		//pen.y = 200;
+		///
+		//renderer.DrawText(m_font, text, &color, &pen);
+
+		
+	//	world->Draw(&renderer);
 		renderer.End();
 
 		window.update();
 		frames++;
 		rotation+=0.1f;
 
+		std::cout << time.elapsed() << "\n";
 		
-		if (time.elapsed() - timer > 1.0f)
-		{
-			timer += 1.0f;
-			//printf("%d fps\n", frames);
-			frames = 0;
-		}
 	}
 	 
 	delete world;

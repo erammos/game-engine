@@ -4,30 +4,38 @@ class Timer
 {
    private:
 	   LARGE_INTEGER m_Start;
-	   double m_Frequency;
+	   LARGE_INTEGER frequency;
+	   LARGE_INTEGER current;
    public:
 	   Timer()
 	   {
-		   LARGE_INTEGER frequency;
-		   QueryPerformanceFrequency(&frequency);
+		   
+		   reset();
 		 
-		   m_Frequency = 1.0 / frequency.QuadPart;
-		   QueryPerformanceCounter(&m_Start);
-
+		   
 	   }
 	   void reset()
 	   {
+		   QueryPerformanceFrequency(&frequency);
 		   QueryPerformanceCounter(&m_Start);
 	   }
 
-	   float elapsed()
+	   double elapsed()
 	   {
-		   LARGE_INTEGER current;
+		   
 		   QueryPerformanceFrequency(&current);
-		   unsigned __int64 cycles = current.QuadPart - m_Start.QuadPart;
+		 
 
-		   return (float)(cycles*m_Frequency);
+		   return  static_cast<double>(current.QuadPart - m_Start.QuadPart) / frequency.QuadPart;
+
 	   }
 
+	 
+
+	  
+
+		   
+		   
+	   
 
 };

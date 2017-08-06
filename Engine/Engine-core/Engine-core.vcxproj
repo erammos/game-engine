@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -27,26 +27,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -69,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.0.0\include\GL;$(SolutionDir)Dependencies\FreeImage\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\glew-2.0.0\lib\Release\Win32;$(SolutionDir)Dependencies\FreeImage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.0.0\include\;$(SolutionDir)Dependencies\FreeImage\include;$(SolutionDir)Dependencies\freetype-gl;C:\Users\rammo\Documents\Visual Studio 2017\Projects\Engine\Engine\Dependencies\freetype-gl\windows\freetype;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\glew-2.0.0\lib\Release\Win32;$(SolutionDir)Dependencies\FreeImage\lib;$(SolutionDir)Dependencies\freetype-gl\windows\freetype;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(Configuration)\Intermediates\</IntDir>
   </PropertyGroup>
@@ -89,10 +89,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;_MBCS;__CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>FreeImage.lib;glew32s.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>legacy_stdio_definitions.lib;freetype.lib;FreeImage.lib;glew32s.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
@@ -140,6 +141,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Dependencies\freetype-gl\distance-field.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\edtaa3func.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\font-manager.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\platform.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\text-buffer.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\texture-atlas.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\texture-font.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\utf8-utils.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\vector.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\vertex-attribute.c" />
+    <ClCompile Include="..\Dependencies\freetype-gl\vertex-buffer.c" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -152,6 +164,21 @@
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dependencies\freetype-gl\distance-field.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\edtaa3func.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\font-manager.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\freetype-gl.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\markup.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\opengl.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\platform.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\text-buffer.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\texture-atlas.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\texture-font.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\utf8-utils.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\vec234.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\vector.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\vertex-attribute.h" />
+    <ClInclude Include="..\Dependencies\freetype-gl\vertex-buffer.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="IndexBuffer.h" />

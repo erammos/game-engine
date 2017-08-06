@@ -26,7 +26,7 @@ namespace Engine {
 			virtual void End() = 0;
 			virtual void SetModelViewMatrix(Mat4f& matrix) = 0;
 			virtual void SetProjectionMatrix(Mat4f& matrix) = 0;
-
+			virtual  void DrawText(texture_font_t * font , char * text, Vec3f * color, Vec2f * pen) = 0;
 		};
 	}
 }

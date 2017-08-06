@@ -43,6 +43,9 @@
     <Filter Include="Source Files\Graphics\Shaders">
       <UniqueIdentifier>{9f0cfd82-22bf-4392-97d8-a249238edf88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ext">
+      <UniqueIdentifier>{bcb8a01e-8603-45e8-9d8b-0dad4e07323d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -74,6 +77,39 @@
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\distance-field.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\edtaa3func.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\font-manager.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\platform.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\text-buffer.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\texture-atlas.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\texture-font.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\utf8-utils.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\vector.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\vertex-attribute.c">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\freetype-gl\vertex-buffer.c">
+      <Filter>ext</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +184,51 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\distance-field.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\edtaa3func.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\font-manager.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\freetype-gl.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\markup.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\opengl.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\platform.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\text-buffer.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\texture-atlas.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\texture-font.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\utf8-utils.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\vec234.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\vector.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\vertex-attribute.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\freetype-gl\vertex-buffer.h">
+      <Filter>ext</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

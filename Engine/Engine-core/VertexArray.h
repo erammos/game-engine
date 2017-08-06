@@ -1,7 +1,7 @@
 #pragma once
 #pragma once
 #pragma once
-#include <glew.h>
+#include <GL/glew.h>
 #include <vector>
 #include "VertexBuffer.h"
 

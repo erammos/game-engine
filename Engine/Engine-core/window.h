@@ -1,5 +1,5 @@
 #pragma once
-#include <glew.h>
+#include <GL/glew.h>
 #include <glfw3.h>
 #define MAX_KEYS 256
 #define MAX_BUTTONS 32

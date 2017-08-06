@@ -10,7 +10,7 @@
 #define TextureManager_H
 
 #include <windows.h>
-#include <glew.h>
+#include <GL/glew.h>
 #include "FreeImage.h"
 #include <map>
 #include "Vec3.h"
