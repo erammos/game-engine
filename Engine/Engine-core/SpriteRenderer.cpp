@@ -101,22 +101,22 @@ void Engine::Graphics::SpriteRenderer::DrawText(texture_font_t * font,
 			m_buffer->vertex = Vec3f(x0, y0, 0);
 
 			m_buffer->color = Color(r, g, b, a);
-			m_buffer->tex = Vec3f(s0, t0, 0);
+			m_buffer->tex = Vec3f(s0, t0, 1);
 
 			m_buffer++;
 			m_buffer->vertex = Vec3f(x0, y1, 0);
 			m_buffer->color = Color(r, g, b, a);
-			m_buffer->tex = Vec3f(s0, t1, 0);
+			m_buffer->tex = Vec3f(s0, t1, 1);
 
 			m_buffer++;
 			m_buffer->vertex = Vec3f(x1, y1, 0);
 			m_buffer->color = Color(r, g, b, a);
-			m_buffer->tex = Vec3f(s1, t1, 0);
+			m_buffer->tex = Vec3f(s1, t1, 1);
 
 			m_buffer++;
 			m_buffer->vertex = Vec3f(x1, y0, 0);
 			m_buffer->color = Color(r, g, b, a);
-			m_buffer->tex = Vec3f(s1, t0, 0);
+			m_buffer->tex = Vec3f(s1, t0, 1);
 
 			m_buffer++;
 
@@ -133,8 +133,6 @@ void Engine::Graphics::SpriteRenderer::Begin()
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	m_buffer = (VertexData *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 
-	glActiveTexture(GL_TEXTURE0);
-	TextureManager::Inst()->BindTexture(0);
 	
 }
 

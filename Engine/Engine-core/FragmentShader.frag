@@ -20,9 +20,6 @@ void main(){
 	
 	highp int tid = int( fs_in.tex.z);
 	
-	color = texture(tex[tid],fs_in.tex.xy) *1;
-
-	
-  
+	color = texture(tex[tid],fs_in.tex.xy);
 
 }

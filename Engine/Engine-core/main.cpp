@@ -84,6 +84,7 @@ int main()
 
 	TextureManager::Inst()->CreateAtlas();
 	world->Init();
+	
 	//glUniform1i(glGetUniformLocation(shader.program_id, "tex[1]"), 1);
 
 	ftgl::texture_atlas_t* m_atlas;
@@ -91,7 +92,7 @@ int main()
 
 	m_atlas = texture_atlas_new(512, 512, 1);
 	m_font =texture_font_new_from_file(m_atlas, 20, "fonts/Vera.ttf");
-
+	
 	//world->Add(obj1);
 	
 	// 0, GL_RBG
@@ -148,9 +149,22 @@ int main()
 	float rotation = 0;
 	Vec2f pen;
 
-	char * text = "t";
+	char * text = "elias";
 	Vec3f color = Vec3f(1, 0, 0);
 	texture_font_load_glyphs(m_font, text);
+
+
+	glGenTextures(1, &m_atlas->id);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, m_atlas->width, m_atlas->height,
+		0, GL_RED, GL_UNSIGNED_BYTE, m_atlas->data);
+
+
+
 	while (!window.closed())
 	{
 		
@@ -161,31 +175,33 @@ int main()
 		window.clear();
 		renderer.Begin();
 		world->SetTransform(Mat4f::translation((window.mouse_x/800.0f)*orthoWidth, orthoHeight -((window.mouse_y)/600.0f)*orthoHeight, 1)* Mat4f::scale(0.5f, 0.5f, 0.5f));
-		//group->SetTransform(Mat4f::translation((window.mouse_x / 800.0f)*80.0f, 60.0f - ((window.mouse_y) / 600.0f)*60.0f, 1));
 		//world->SetTransform(Mat4f::translation((window.mouse_x/800.0f)*80.0f, 60.0f-((window.mouse_y)/600.0f)*60.0f, 1));
 		//937
 			//300
 		tableLayout->LocalTransform =  Mat4f::translation(937 / 2, 300 / 2, 0) * Mat4f::rotateZ(TO_RADIANS(rotation)) * Mat4f::translation(-937/2, -300/2, 0);
 	
 
-	//	pen.x = 5;
-		//pen.y = 200;
+		pen.x = 5;
+		pen.y = 200;
 		///
-		//renderer.DrawText(m_font, text, &color, &pen);
+		glBindTexture(GL_TEXTURE_2D, m_atlas->id);
+		renderer.DrawText(m_font, text, &color, &pen);
+		//glActiveTexture(GL_TEXTURE0);
+		TextureManager::Inst()->BindTexture(0);
 
 		
-	//	world->Draw(&renderer);
+		world->Draw(&renderer);
 		renderer.End();
 
 		window.update();
 		frames++;
 		rotation+=0.1f;
 
-		std::cout << time.elapsed() << "\n";
+	//	std::cout << time.elapsed() << "\n";
 		
 	}
 	 
-	delete world;
+	//delete world;
 	return 0;
 
 }

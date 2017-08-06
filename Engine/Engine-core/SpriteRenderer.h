@@ -9,7 +9,7 @@ namespace Engine {
 	namespace Graphics
 	{
 
-#define MAX_SPRITES        100000
+#define MAX_SPRITES        10000
 #define VERTEX_SIZE        sizeof(VertexData)
 #define SPRITE_SIZE        VERTEX_SIZE * 4
 #define TOTAL_BUFFER_SIZE  SPRITE_SIZE * MAX_SPRITES
@@ -41,7 +41,7 @@ namespace Engine {
 			 void SetModelViewMatrix(Mat4f& matrix) override;
 			 void SetProjectionMatrix(Mat4f& matrix) override;
 			 void  DrawText(texture_font_t * font,
-				 char * text, Vec3f * color, Vec2f * pen) override;
+				 char * text, Vec3f * color, Vec2f * pen);
 
 
 

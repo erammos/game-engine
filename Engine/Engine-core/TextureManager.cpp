@@ -29,7 +29,6 @@ TextureManager::TextureManager()
 bool TextureManager::CreateAtlas()
 {
 	
-	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &atlas_tex);
 	glBindTexture(GL_TEXTURE_2D, atlas_tex);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -76,7 +75,7 @@ bool TextureManager::CreateAtlas()
 	   FreeImage_Unload(dib);
 	}
 
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
