@@ -101,7 +101,73 @@ texture_atlas_set_region( texture_atlas_t * self,
     }
 }
 
+void
+texture_atlas_set_region2(texture_atlas_t * self,
+	const size_t x,
+	const size_t y,
+	const size_t width,
+	const size_t height,
+	const unsigned char * data,
+	const size_t stride)
+{
+	size_t i;
+	size_t depth;
+	size_t charsize;
 
+	assert(self);
+	assert(x > 0);
+	assert(y > 0);
+	assert(x < (self->width - 1));
+	assert((x + width) <= (self->width - 1));
+	assert(y < (self->height - 1));
+	assert((y + height) <= (self->height - 1));
+
+	//prevent copying data from undefined position 
+	//and prevent memcpy's undefined behavior when count is zero
+	assert(height == 0 || (data != NULL && width > 0));
+
+	depth = self->depth;
+	charsize = sizeof(char);
+
+	
+	for (i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < width; ++j)
+		{
+
+			//int from_index = j + i * width;
+
+			int to_i = y + i;
+			int to_j = x + j;
+			
+			int to_index = to_j + to_i * width;
+
+			//int b = data[from_index * 4];
+			//int g = data[from_index * 4 + 1];
+			//int r = data[from_index * 4+ 2];
+			//int a = data[from_index * 4 + 3];
+
+		
+			if (j > width / 2)
+			{
+				self->data[to_index * 4] = 255;
+				self->data[to_index * 4 + 1] = 0;
+				self->data[to_index * 4 + 2] = 0;
+				self->data[to_index * 4 + 3] = 255;
+			}
+			else
+			{
+				self->data[to_index * 4] = 0;
+				self->data[to_index * 4 + 1] = 255;
+				self->data[to_index * 4 + 2] = 0;
+				self->data[to_index * 4 + 3] = 255;
+			}
+		
+		}
+	//	memcpy(self->data + ((y + i)*self->width + x) * charsize * depth,
+			//data + (i*stride) * charsize, width * charsize * depth);
+	}
+}
 // ------------------------------------------------------ texture_atlas_fit ---
 int
 texture_atlas_fit( texture_atlas_t * self,

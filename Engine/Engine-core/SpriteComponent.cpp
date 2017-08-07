@@ -9,16 +9,26 @@ using namespace Graphics;
 void Engine::Graphics::SpriteComponent::Init()
 {
 
-	double offset_x = TextureManager::Inst()->textures[imageName];
-	double perc_height = height / (double)TextureManager::Inst()->atlas_height;
+	Vec2f percetages = TextureManager::Inst()->textures[imageName];
 
-	double perc_width = width / (double) TextureManager::Inst()->atlas_width;
+	double Ax = (percetages.x ) / (double)TextureManager::Inst()->atlas_width;
+	double Ay = (percetages.y ) / (double)TextureManager::Inst()->atlas_height;
 
-    rect.bl.tex = Vec3f(offset_x, 0, 0);
-	rect.tl.tex = Vec3f(offset_x, 0 + perc_height, 0);
-	rect.tr.tex = Vec3f(offset_x + perc_width, 0 + perc_height, 0);
-	rect.br.tex = Vec3f(offset_x + perc_width, 0, 0);
+	double Bx = (percetages.x + width) / (double)TextureManager::Inst()->atlas_width;
+	double By = (percetages.y + height) / (double)TextureManager::Inst()->atlas_height;
+
 	
+
+    rect.bl.tex = Vec3f(Ax, Ay, 0);
+    rect.tl.tex = Vec3f(Ax, By, 0);
+	rect.tr.tex = Vec3f(Bx, By, 0);
+	rect.br.tex = Vec3f(Bx, Ay, 0);
+	
+	//rect.bl.tex = Vec3f(0, 0, 0);
+	//rect.tl.tex = Vec3f(0,1, 0);
+	//rect.tr.tex = Vec3f(1, 1, 0);
+	//rect.br.tex = Vec3f(1, 0, 0);
+
 
 	rect.bl.vertex = Vec3f(x, y, 1);
 	rect.tl.vertex = Vec3f(x, y + height, 1);

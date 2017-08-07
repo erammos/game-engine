@@ -174,7 +174,14 @@ typedef struct texture_atlas_t
                             const size_t height,
                             const unsigned char *data,
                             const size_t stride );
-
+  void
+	  texture_atlas_set_region2(texture_atlas_t * self,
+		  const size_t x,
+		  const size_t y,
+		  const size_t width,
+		  const size_t height,
+		  const unsigned char *data,
+		  const size_t stride);
 /**
  *  Remove all allocated regions from the atlas.
  *

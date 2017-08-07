@@ -13,19 +13,21 @@
 #include <GL/glew.h>
 #include "FreeImage.h"
 #include <map>
-#include "Vec3.h"
-
+#include "Vec2.h"
+#include "freetype-gl.h"
 using namespace Engine;
 using namespace Math;
+using namespace ftgl;
 class TextureManager
 {
 public:
 	static TextureManager* Inst();
 	std::map<unsigned int, GLuint> m_texID;
 
-	std::map<std::string ,double> textures;
+	std::map<std::string ,Vec2f> textures;
+	texture_atlas_t* m_textureAtlas;
+	texture_atlas_t* m_fontAtlas;
 
-	GLuint atlas_tex;
 	int atlas_width = 0;
 	int atlas_height = 0;
 	virtual ~TextureManager();
@@ -46,15 +48,18 @@ public:
 	bool UnloadTexture(const unsigned int texID);
 
 	//set the current texture
-	bool BindTexture(const unsigned int texID);
-	
+	void BindTextures();
+	void UnBindTextures();
+
 	//free all texture memory
 	void UnloadAllTextures();
 	const int generateId()
 	{
 		 return ids++;
 	}
-	bool CreateAtlas();
+	bool CreateTextureAtlas();
+	ftgl::texture_font_t* LoadFont(const char* filename);
+
 protected:
 	TextureManager();
 	TextureManager(const TextureManager& tm);

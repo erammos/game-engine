@@ -31,7 +31,7 @@ namespace Engine {
 			wnd->mouse_x = x;
 			wnd->mouse_y = y;
 		}
-		void Window::init()
+		void Window::init(GLFWframebuffersizefun cbfun)
 		{
 			if (!glfwInit())
 			{
@@ -53,7 +53,7 @@ namespace Engine {
 		
 			
 			
-			glfwSetFramebufferSizeCallback(gl_window, windowResizeCB);
+			glfwSetFramebufferSizeCallback(gl_window, cbfun);
 			glfwSetWindowUserPointer(gl_window, this);
 			glfwSetKeyCallback(gl_window, key_callback);
 			glfwSetMouseButtonCallback(gl_window, mouse_button_callback);
@@ -66,12 +66,12 @@ namespace Engine {
 		void Window::getGLWindow()
 		{
 		}
-		Window::Window(const char * name, int width, int height)
+		Window::Window(const char * name, int width, int height , GLFWframebuffersizefun cbfun)
 		{
 			this->name = name;
 			this->width = width;
 			this->height = height;
-			init();
+			init(cbfun);
 			for (int i = 0; i < MAX_KEYS; i++)
 			{
 				m_Keys[i] = false;

@@ -26,58 +26,97 @@ TextureManager::TextureManager()
 	#endif
 
 }
-bool TextureManager::CreateAtlas()
+bool TextureManager::CreateTextureAtlas()
 {
-	
-	glGenTextures(1, &atlas_tex);
-	glBindTexture(GL_TEXTURE_2D, atlas_tex);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, atlas_width, atlas_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-	
-	int x = 0;
+
+	atlas_width += 2;
+	atlas_height += 2;
+	m_textureAtlas = texture_atlas_new(atlas_width, atlas_height, 4);
+
 	for (auto const& file : textures)
 	{
 		std::string filename = file.first;
-		
+
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 		//pointer to the image, once loaded
 		FIBITMAP *dib(0);
 		//pointer to the image data
 		BYTE* bits(0);
 
-		fif = FreeImage_GetFileType(filename.c_str(), 0);	
+		fif = FreeImage_GetFileType(filename.c_str(), 0);
 		if (fif == FIF_UNKNOWN)
 			fif = FreeImage_GetFIFFromFilename(filename.c_str());
-		
+
 		if (fif == FIF_UNKNOWN)
 			return false;
 
 		if (FreeImage_FIFSupportsReading(fif))
 			dib = FreeImage_Load(fif, filename.c_str());
-	
+
 		if (!dib)
 			return false;
 
 		//retrieve the image data
 		bits = FreeImage_GetBits(dib);
-		//get the image width and height
-	   int	width = FreeImage_GetWidth(dib);
-       int height = FreeImage_GetHeight(dib);
 
-	   if (bits == 0 || (width == 0) || (height == 0))
-		   return false;
-	   glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, bits);
+		int pitch = FreeImage_GetPitch(dib);
+		//get the image width and height
+		int	width = FreeImage_GetWidth(dib);
+		int height = FreeImage_GetHeight(dib);
+		int k = FreeImage_GetBPP(dib);
+
+		if (bits == 0 || (width == 0) || (height == 0))
+			return false;
+
+		ivec4 coords = texture_atlas_get_region(m_textureAtlas, width, height);
+
+		textures[filename] = Vec2f(coords.x , coords.y );
+
+
+		texture_atlas_set_region(m_textureAtlas, coords.x, coords.y, width, height, bits, pitch);
+
+
 	
-	   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	   textures[filename] = x / (double) atlas_width;
-	   x += width;
-	   FreeImage_Unload(dib);
+		FreeImage_Unload(dib);
 	}
 
+	glGenTextures(1, &m_textureAtlas->id);
+	glBindTexture(GL_TEXTURE_2D, m_textureAtlas->id);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, atlas_width, atlas_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_textureAtlas->data);
+	
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
+
+ftgl::texture_font_t* TextureManager::LoadFont(const char * filename)
+{
+	
+	ftgl::texture_font_t* m_font;
+
+	
+	m_fontAtlas = texture_atlas_new(512, 512, 1);
+	m_font = texture_font_new_from_file(m_fontAtlas, 20, filename);
+	texture_font_load_glyphs(m_font, " !\"#$%&'()*+,-./0123456789:;<=>?"
+		"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
+		"`abcdefghijklmnopqrstuvwxyz{|}~");
+
+	glGenTextures(1, &m_fontAtlas->id);
+	glBindTexture(GL_TEXTURE_2D, m_fontAtlas->id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, m_fontAtlas->width, m_fontAtlas->height,
+		0, GL_RED, GL_UNSIGNED_BYTE, m_fontAtlas->data);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	return m_font;
+}
+
+
 
 //these should never be called
 //TextureManager::TextureManager(const TextureManager& tm){}
@@ -145,9 +184,9 @@ bool TextureManager::AddTexture(const char* filename, int& width, int& height)
 		return false;
 
 	atlas_width += width;
-	atlas_height = max(atlas_height, height);
+	atlas_height +=height;
 
-	textures[filename] = 0.0f;
+	textures[filename] = Vec2f(-1,-1);
 	FreeImage_Unload(dib);
 	return true;
 }
@@ -180,7 +219,6 @@ bool TextureManager::LoadTexture(const char* filename,  const unsigned int texID
 	//if the image failed to load, return failure
 	if (!dib)
 		return false;
-
 	//retrieve the image data
 	bits = FreeImage_GetBits(dib);
 	//get the image width and height
@@ -237,19 +275,25 @@ bool TextureManager::UnloadTexture(const unsigned int texID)
 	return result;
 }
 
-bool TextureManager::BindTexture(const unsigned int texID)
+void TextureManager::BindTextures()
 {
-	bool result(true);
-	//if this texture ID mapped, bind it's texture as current
-	//if(m_texID.find(texID) != m_texID.end())
-		glBindTexture(GL_TEXTURE_2D, atlas_tex);
-	//otherwise, binding failed
-	//else
-		//result = false;
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_textureAtlas->id);
 
-    return result;
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_fontAtlas->id);
+
+		
+
 }
+void TextureManager::UnBindTextures()
+{
 
+	glBindTexture(GL_TEXTURE_2D, 0);
+	
+
+	
+}
 void TextureManager::UnloadAllTextures()
 {
 	//start at the begginning of the texture map

@@ -19,7 +19,15 @@ void main(){
    
 	
 	highp int tid = int( fs_in.tex.z);
+	if(tid  > 0)
+	{
+	float a = texture(tex[1],fs_in.tex.xy).r;
+	color =  vec4(fs_in.color.rgb, fs_in.color.a*a);
+	}
+	else
+	{
+	  color = texture(tex[0],fs_in.tex.xy);
+	}
 	
-	color = texture(tex[tid],fs_in.tex.xy);
 
 }

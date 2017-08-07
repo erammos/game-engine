@@ -61,11 +61,12 @@ Engine::Graphics::SpriteRenderer::~SpriteRenderer()
 
 
 void Engine::Graphics::SpriteRenderer::DrawText(texture_font_t * font,
-	char * text, Vec3f * color, Vec2f * pen)
+	char * text, Vec3f * color, int x, int y)
 {
 	size_t i;
 	float r = color->x, g = color->y, b = color->z, a = color->w;
-
+	int originx = x;
+	int originy = y;
 	for (i = 0; i < strlen(text); ++i)
 	{
 		texture_glyph_t *glyph = texture_font_get_glyph(font, text + i);
@@ -76,10 +77,10 @@ void Engine::Graphics::SpriteRenderer::DrawText(texture_font_t * font,
 			{
 				kerning = texture_glyph_get_kerning(glyph, text + i - 1);
 			}
-			pen->x += kerning;
+			originx += kerning;
 
-			float x0 = (pen->x + glyph->offset_x);
-			float y0 = (pen->y + glyph->offset_y);
+			float x0 = (originx + glyph->offset_x);
+			float y0 = (originy + glyph->offset_y);
 			float x1 = (x0 + glyph->width);
 			float y1 = (y0 - glyph->height);
 
@@ -88,14 +89,7 @@ void Engine::Graphics::SpriteRenderer::DrawText(texture_font_t * font,
 			float s1 = glyph->s1;
 			float t1 = glyph->t1;
 
-			GLuint indices[6] = { 0,1,2, 0,2,3 };
-			//vertex_t vertices[4] = 
-			//{ { x0,y0,0,  s0,t0,  r,g,b,a },
-			//{ x0,y1,0,  s0,t1,  r,g,b,a },
-			//{ x1,y1,0,  s1,t1,  r,g,b,a },
-			//{ x1,y0,0,  s1,t0,  r,g,b,a } };
-			//vertex_buffer_push_back(buffer, vertices, 4, indices, 6);
-			pen->x += glyph->advance_x;
+			originx += glyph->advance_x;
 
 
 			m_buffer->vertex = Vec3f(x0, y0, 0);
@@ -132,7 +126,8 @@ void Engine::Graphics::SpriteRenderer::Begin()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	m_buffer = (VertexData *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
+	
+	TextureManager::Inst()->BindTextures();
 	
 }
 
@@ -158,6 +153,7 @@ void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)
 }
 void Engine::Graphics::SpriteRenderer::End()
 {
+
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -168,6 +164,7 @@ void Engine::Graphics::SpriteRenderer::End()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 	m_indexCount = 0;
+
 }
 
 void Engine::Graphics::SpriteRenderer::SetShaderId(GLuint shader_id)

@@ -41,7 +41,7 @@ namespace Engine {
 			 void SetModelViewMatrix(Mat4f& matrix) override;
 			 void SetProjectionMatrix(Mat4f& matrix) override;
 			 void  DrawText(texture_font_t * font,
-				 char * text, Vec3f * color, Vec2f * pen);
+				 char * text, Vec3f * color, int x, int y);
 
 
 

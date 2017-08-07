@@ -15,11 +15,11 @@ namespace Engine {
 			int width, height;
 			GLFWwindow *gl_window;
 			
-			void init();
+			void init(GLFWframebuffersizefun cbfun);
 		protected: 
 			void getGLWindow();
 		public:
-			Window(const char* name, int width, int height);
+			Window(const char* name, int width, int height , GLFWframebuffersizefun cbfun);
 			~Window();
 			bool m_Keys[MAX_KEYS];
 			bool m_MouseButtons[MAX_BUTTONS];
