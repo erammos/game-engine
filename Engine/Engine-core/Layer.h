@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Renderer.h"
 #include "Shader.h"
-#include "GraphicsComponent.h"
+#include "GraphicComponent.h"
 
 namespace Engine {
 	namespace Graphics

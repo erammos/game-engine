@@ -61,10 +61,10 @@ Engine::Graphics::SpriteRenderer::~SpriteRenderer()
 
 
 void Engine::Graphics::SpriteRenderer::DrawText(texture_font_t * font,
-	char * text, Vec3f * color, int x, int y)
+	const char * text, Color color, int x, int y)
 {
 	size_t i;
-	float r = color->x, g = color->y, b = color->z, a = color->w;
+	float r = color.r, g = color.g, b = color.b, a = color.a;
 	int originx = x;
 	int originy = y;
 	for (i = 0; i < strlen(text); ++i)
@@ -131,25 +131,27 @@ void Engine::Graphics::SpriteRenderer::Begin()
 	
 }
 
-void Engine::Graphics::SpriteRenderer::Draw(GraphicsComponent* renderable)
+void Engine::Graphics::SpriteRenderer::Draw(GraphicComponent* renderable)
 {
-	SpriteComponent * sprite = (SpriteComponent *)renderable;
+	RectComponent * obj = (RectComponent *)renderable;
+	int size;
+	Rect* rect = obj->GetRects(size);
 
-	Color color = sprite->GetColor();
-	Rect rect = sprite->GetRect();
-	
-
-	VertexData * p = &rect.bl;
-	for (int i = 0; i < 4; i++)
+	for (int numRects = 0; numRects < size; numRects++)
 	{
- 		m_buffer->vertex = p->vertex;
-		m_buffer->color = color;
-		m_buffer->tex = p->tex;
-		p++;
-		m_buffer++;
+		VertexData * p = &rect[numRects].bl;
+		for (int i = 0; i < 4; i++)
+		{
+			m_buffer->vertex = p->vertex;
+			m_buffer->color = p->color;
+			m_buffer->tex = p->tex;
+			p++;
+			m_buffer++;
 
+		}
+		m_indexCount += 6;
 	}
-	m_indexCount += 6;
+	
 }
 void Engine::Graphics::SpriteRenderer::End()
 {

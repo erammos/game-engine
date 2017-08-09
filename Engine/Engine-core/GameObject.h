@@ -7,7 +7,7 @@ namespace Engine {
 	namespace Graphics
 	{
 		class Renderer;
-		class GraphicsComponent;
+		class GraphicComponent;
 		using namespace Math;
 
 		class GameObject
@@ -15,7 +15,8 @@ namespace Engine {
 		protected:
 		   GameObject * parent;
 		   std::vector<GameObject *> childs;
-		   GraphicsComponent * graphics = NULL;
+		   std::vector<GraphicComponent *> graphics;
+		
 		   bool m_dirty = true;
 
 	    public:
@@ -27,7 +28,7 @@ namespace Engine {
 			void Draw(Renderer * renderer);
 			void Init();
 			void Add(GameObject * gameobject);
-			void AddGraphicComponent(GraphicsComponent * component);
+			void AddGraphicComponent(GraphicComponent * component);
 			void SetTransform(Mat4f transform);
 			inline const bool isDirty() const { return m_dirty; }
 		

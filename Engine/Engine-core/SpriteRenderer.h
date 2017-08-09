@@ -2,7 +2,6 @@
 
 #include <deque>
 #include <GL/glew.h>
-#include "freetype-gl.h"
 #include "Renderer.h"
 
 namespace Engine {
@@ -35,13 +34,14 @@ namespace Engine {
 			SpriteRenderer();
 			 ~SpriteRenderer();
 			 void Begin() override;
-			 void Draw(GraphicsComponent* renderable) override;		
+			
+			 void Draw(GraphicComponent* renderable) override;		
 			 void End() override;
 			 void SetShaderId(GLuint shader_id);
 			 void SetModelViewMatrix(Mat4f& matrix) override;
 			 void SetProjectionMatrix(Mat4f& matrix) override;
 			 void  DrawText(texture_font_t * font,
-				 char * text, Vec3f * color, int x, int y);
+				const char * text, Color color, int x, int y) override;
 
 
 

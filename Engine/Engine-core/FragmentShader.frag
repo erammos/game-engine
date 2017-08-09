@@ -19,7 +19,11 @@ void main(){
    
 	
 	highp int tid = int( fs_in.tex.z);
-	if(tid  > 0)
+	if(tid < 0)
+	{
+	     color = fs_in.color;
+	}
+	else if(tid  > 0)
 	{
 	float a = texture(tex[1],fs_in.tex.xy).r;
 	color =  vec4(fs_in.color.rgb, fs_in.color.a*a);

@@ -14,7 +14,7 @@
 #include "FreeImage.h"
 #include "TextureManager.h"
 #include "Timer.h"
-
+#include "TextComponent.h"
 
 
 //#include "Object2D.h"
@@ -29,7 +29,8 @@ void windowResizeCB(GLFWwindow * window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 	renderer->SetProjectionMatrix(Mat4f::ortho(0.0, width, 0.0f, height, 1.0f, -1.0f));
-
+	orthoWidth = width;
+	orthoHeight = height;
 }
 
 int main()
@@ -64,7 +65,7 @@ int main()
 	//glUniformMatrix4fv(glGetUniformLocation(shader.program_id, "model_matrix"), 1, GL_FALSE, Mat4f::identity().values);
 	//glActiveTexture(GL_TEXTURE0);
 
-	
+	char * text = "Vaggelis is    the best !!";
 
 	GameObject * world = new GameObject();
 	world->LocalTransform = Mat4f::scale(1, 1, 1);
@@ -75,20 +76,22 @@ int main()
 	float scale = 0.5f;
 	GameObject * button1 = new GameObject();
 	button1->AddGraphicComponent(new SpriteComponent("button2.png"));
-	button1->LocalTransform = Mat4f::translation(0, 0, 0) * Mat4f::scale(scale, scale, scale);
+	button1->AddGraphicComponent(new TextComponent(0,0, "elias", "fonts/Vera.ttf", Color(1,0,1)));
+	//button1->AddGraphicComponent(new TextComponent(40, 0, "is the best", "fonts/Vera.ttf", Color(1, 0, 0)));
+	//button1->LocalTransform = Mat4f::translation(0, 0, 0) * Mat4f::scale(scale, scale, scale);
 
-	GameObject * button2 = new GameObject();
-	button2->AddGraphicComponent(new SpriteComponent("button1.png"));
-	button2->LocalTransform = Mat4f::translation(702* scale, 0, 0)* Mat4f::scale(scale, scale, scale);
+	//GameObject * button2 = new GameObject();
+	//button2->AddGraphicComponent(new SpriteComponent("button1.png"));
+	//button2->LocalTransform = Mat4f::translation(702* scale, 0, 0)* Mat4f::scale(scale, scale, scale);
 	
-	GameObject * button3 = new GameObject();
-	button3->AddGraphicComponent(new SpriteComponent("button1.png"));
-	button3->LocalTransform = Mat4f::translation(702*2 * scale, 0, 0)* Mat4f::scale(scale, scale, scale);
+	//GameObject * button3 = new GameObject();
+	//button3->AddGraphicComponent(new SpriteComponent("button1.png"));
+	//button3->LocalTransform = Mat4f::translation(702*2 * scale, 0, 0)* Mat4f::scale(scale, scale, scale);
 	
 	tableLayout->Add(button1);
-	tableLayout->Add(button2);
-	tableLayout->Add(button3);
-
+	//tableLayout->Add(button2);
+	//tableLayout->Add(button3);
+	//*/
 	world->Add(tableLayout);
 
 	TextureManager::Inst()->CreateTextureAtlas();
@@ -96,7 +99,7 @@ int main()
 	
 	//glUniform1i(glGetUniformLocation(shader.program_id, "tex[1]"), 1);
 
-	ftgl::texture_font_t* m_font =TextureManager::Inst()->LoadFont("fonts/Vera.ttf");
+	//ftgl::texture_font_t* m_font =TextureManager::Inst()->LoadFont();
 	
 	
 	//world->Add(obj1);
@@ -155,8 +158,8 @@ int main()
 	float rotation = 0;
 	Vec2f pen;
 
-	char * text = "Vaggelis is    the best !!";
-	Vec3f color = Vec3f(1, 0, 1);
+	
+	Color color = Color(1, 0, 1);
 	
 	
 
@@ -168,31 +171,48 @@ int main()
 	while (!window.closed())
 	{
 		
+
+		LARGE_INTEGER StartingTime, EndingTime, ElapsedMicroseconds;
+		LARGE_INTEGER Frequency;
+
+		QueryPerformanceFrequency(&Frequency);
+		QueryPerformanceCounter(&StartingTime);
+
+		// Activity to be timed
+
+
+
+		
 		//Mat4f model_m = Mat4f::translation(0,0,-5) *Mat4f::rotateY(TO_RADIANS(angle));
 		//
-		glUniform2f(glGetUniformLocation(shader.program_id, "light_pos"), (window.mouse_x / 800.0f)*orthoWidth, orthoHeight - ((window.mouse_y) / 600.0f)*orthoHeight);
+		glUniform2f(glGetUniformLocation(shader.program_id, "light_pos"), (window.mouse_x / orthoWidth)*orthoWidth, orthoHeight - ((window.mouse_y) / orthoHeight)*orthoHeight);
 
 		window.clear();
 		renderer->Begin();
-		world->SetTransform(Mat4f::translation((window.mouse_x/800.0f)*orthoWidth, orthoHeight -((window.mouse_y)/600.0f)*orthoHeight, 1)* Mat4f::scale(0.5f, 0.5f, 0.5f));
-		//world->SetTransform(Mat4f::translation((window.mouse_x/800.0f)*80.0f, 60.0f-((window.mouse_y)/600.0f)*60.0f, 1));
+		//world->SetTransform(Mat4f::translation((window.mouse_x/800.0f)*orthoWidth, orthoHeight -((window.mouse_y)/600.0f)*orthoHeight, 1)* Mat4f::scale(0.5f, 0.5f, 0.5f));
+		button1->SetTransform(Mat4f::translation((window.mouse_x/800.0f)*80.0f, 60.0f-((window.mouse_y)/600.0f)*60.0f, 1) * Mat4f::scale(scale, scale, scale));
 		//937
 			//300
-		tableLayout->LocalTransform =  Mat4f::translation(937 / 2, 300 / 2, 0) * Mat4f::rotateZ(TO_RADIANS(rotation)) * Mat4f::translation(-937/2, -300/2, 0);
+		//tableLayout->SetTransform( Mat4f::translation(937 / 2, 300 / 2, 0) * Mat4f::rotateZ(TO_RADIANS(rotation)) * Mat4f::translation(-937/2, -300/2, 0));
 
 		
 	
 		world->Draw(renderer);
-		renderer->DrawText(m_font, text, &color, 5, 200);
+	//	renderer->DrawText(m_font, text, color, 0, 0);
 			
 	
 		renderer->End();
 
 		window.update();
 		frames++;
-		rotation+=0.1f;
-
-	//	std::cout << time.elapsed() << "\n";
+		rotation+=0.2f;
+		
+	
+		QueryPerformanceCounter(&EndingTime);
+		ElapsedMicroseconds.QuadPart = EndingTime.QuadPart - StartingTime.QuadPart;
+		ElapsedMicroseconds.QuadPart *= 1000000;
+		ElapsedMicroseconds.QuadPart /= Frequency.QuadPart;
+	std::cout << ElapsedMicroseconds.QuadPart /1000.0f << " ms \n";
 		
 	}
 	 

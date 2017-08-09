@@ -1,5 +1,5 @@
 #include "GameObject.h"
-#include "GraphicsComponent.h"
+#include "GraphicComponent.h"
 #include <iostream>
 Engine::Graphics::GameObject::GameObject()
 {
@@ -8,7 +8,7 @@ Engine::Graphics::GameObject::GameObject()
 
 Engine::Graphics::GameObject::~GameObject()
 {
-	delete graphics;
+	
 	for (int i = 0; i < childs.size(); i++)
 	{
 		delete childs[i];
@@ -17,7 +17,7 @@ Engine::Graphics::GameObject::~GameObject()
 void Engine::Graphics::GameObject::Init()
 {
 	
-	if (graphics)graphics->Init();
+	for (auto g : graphics) g->Init();
 	for (int i = 0; i < childs.size(); i++)
 	{
 		childs[i]->Init();
@@ -34,10 +34,14 @@ void Engine::Graphics::GameObject::Draw(Renderer * renderer)
 	{
 		//std::cout << "Rendering" << std::endl;
 		WorldTransform = (parent) ? parent->WorldTransform * LocalTransform : LocalTransform;
-		if (graphics)graphics->Update();
+			
+			for (auto  g : graphics) g->Update();
+			
+				
+			
 	}
 
-	if (graphics)graphics->Draw(renderer);
+	for (auto  g : graphics) g->Draw(renderer);
 
 	for (int i = 0; i < childs.size(); i++)
 	{
@@ -54,11 +58,12 @@ void Engine::Graphics::GameObject::Add(GameObject * gameobject)
 	childs.push_back(gameobject);
 }
 
-void Engine::Graphics::GameObject::AddGraphicComponent(GraphicsComponent * component)
+void Engine::Graphics::GameObject::AddGraphicComponent(GraphicComponent * component)
 {
 	{
 		component->SetOwner(this);
-		graphics = component;
+		graphics.push_back(component);
+		
 	}
 }
 

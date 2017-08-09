@@ -1,11 +1,12 @@
 #pragma once
 #include <deque>
 #include "Math.h"
+#include "freetype-gl.h"
 
 namespace Engine {
 	namespace Graphics
 	{
-		class GraphicsComponent;
+		class GraphicComponent;
 		using namespace Math;
 		struct VertexData
 		{
@@ -22,11 +23,12 @@ namespace Engine {
 		
 		public:
 			virtual void Begin() = 0;
-			virtual void Draw(GraphicsComponent* renderable) = 0;
+			virtual void Draw(GraphicComponent* renderable) = 0;
 			virtual void End() = 0;
 			virtual void SetModelViewMatrix(Mat4f& matrix) = 0;
 			virtual void SetProjectionMatrix(Mat4f& matrix) = 0;
-		//	virtual  void DrawText(texture_font_t * font , char * text, Vec3f * color, Vec2f * pen) = 0;
+			virtual void  DrawText(texture_font_t * font,
+				const char * text, Color color, int x, int y) = 0;
 		};
 	}
 }
