@@ -19,32 +19,44 @@
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{387a3ba6-6c17-4314-91b5-10b9c7af3ce3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Math">
-      <UniqueIdentifier>{6c65e172-b0ea-47a0-b754-9018ad6153c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{d8d8602e-a4e3-4184-9c19-14c061653a9a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{f3be969f-63a8-430f-8f29-54f27bf6068c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics\Buffers">
-      <UniqueIdentifier>{1f99575b-6e85-40b7-a502-ce05ce8a358f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\Renderables">
-      <UniqueIdentifier>{d0197277-9c7e-47b1-9b66-c6ee0a80fe70}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graphics\Renderers">
       <UniqueIdentifier>{19259405-fec3-4e4a-9f78-9f0969b7d8e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\Layers">
-      <UniqueIdentifier>{3a632127-c82d-4680-86d8-47a4fd74b55f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Graphics\Shaders">
       <UniqueIdentifier>{9f0cfd82-22bf-4392-97d8-a249238edf88}</UniqueIdentifier>
     </Filter>
     <Filter Include="ext">
       <UniqueIdentifier>{bcb8a01e-8603-45e8-9d8b-0dad4e07323d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{81457601-4f9a-464e-a9f8-30a9c19c1f0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Buffers">
+      <UniqueIdentifier>{1f99575b-6e85-40b7-a502-ce05ce8a358f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Layers">
+      <UniqueIdentifier>{3a632127-c82d-4680-86d8-47a4fd74b55f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Components">
+      <UniqueIdentifier>{93f46ee2-a3c8-4009-b93f-fbecf2809633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Components">
+      <UniqueIdentifier>{d0197277-9c7e-47b1-9b66-c6ee0a80fe70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Renderers">
+      <UniqueIdentifier>{9b71b59e-1b44-4fd2-8c58-825a73eb74cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Shaders">
+      <UniqueIdentifier>{af1e87d2-5ad5-4ba0-99fa-8dcd6d829b3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{d8d8602e-a4e3-4184-9c19-14c061653a9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{6c65e172-b0ea-47a0-b754-9018ad6153c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -53,9 +65,6 @@
     </ClCompile>
     <ClCompile Include="window.cpp">
       <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticSprite.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -67,16 +76,10 @@
       <Filter>Source Files\Graphics\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Graphics\Components</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Dependencies\freetype-gl\distance-field.c">
       <Filter>ext</Filter>
@@ -111,79 +114,52 @@
     <ClCompile Include="..\Dependencies\freetype-gl\vertex-buffer.c">
       <Filter>ext</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicComponent.cpp">
+      <Filter>Source Files\Graphics\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RectComponent.cpp">
+      <Filter>Source Files\Graphics\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>Source Files\Graphics\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="window.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Vec2.h">
-      <Filter>Source Files\Math</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Matrix_old.h">
-      <Filter>Source Files\Math</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Mat4.h">
-      <Filter>Source Files\Math</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Vec3_old.h">
-      <Filter>Source Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec3.h">
-      <Filter>Source Files\Math</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
-      <Filter>Source Files\Math</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
-      <Filter>Source Files\Math</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="IndexBuffer.h">
-      <Filter>Source Files\Graphics\Buffers</Filter>
+      <Filter>Header Files\Graphics\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="VertexArray.h">
-      <Filter>Source Files\Graphics\Buffers</Filter>
+      <Filter>Header Files\Graphics\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="VertexBuffer.h">
-      <Filter>Source Files\Graphics\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticSprite.h">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsComponent.h">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteRenderer.h">
-      <Filter>Source Files\Graphics\Renderers</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Source Files\Graphics\Renderers</Filter>
+      <Filter>Header Files\Graphics\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="Layer.h">
-      <Filter>Source Files\Graphics\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Source Files\Graphics\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteComponent.h">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Header Files\Graphics\Layers</Filter>
     </ClInclude>
     <ClInclude Include="..\Dependencies\freetype-gl\distance-field.h">
       <Filter>ext</Filter>
@@ -229,6 +205,54 @@
     </ClInclude>
     <ClInclude Include="..\Dependencies\freetype-gl\vertex-buffer.h">
       <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicComponent.h">
+      <Filter>Header Files\Graphics\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RectComponent.h">
+      <Filter>Header Files\Graphics\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Header Files\Graphics\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Header Files\Graphics\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Header Files\Graphics\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\Graphics\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Graphics\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\Graphics\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec4.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviourComponent.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

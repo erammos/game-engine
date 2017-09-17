@@ -10,6 +10,7 @@ namespace Engine {
 			Component(GameObject * owner):Owner(owner)  { }
 			Component(){}
 		public:
+			virtual void Init() = 0;
 			virtual void Update() = 0;
 			inline const GameObject * GetOwner() const { return Owner; }
 			void SetOwner(GameObject * object)

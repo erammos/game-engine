@@ -26,6 +26,18 @@ void Engine::Graphics::GameObject::Init()
 	
 }
 
+void Engine::Graphics::GameObject::Update()
+{
+	
+	for (auto b : behaviours) b->Update();
+
+	for (int i = 0; i < childs.size(); i++)
+	{
+		childs[i]->Update();
+	}
+
+}
+
 void Engine::Graphics::GameObject::Draw(Renderer * renderer)
 {
 	m_dirty = m_dirty |= ((parent) ? parent->isDirty() : false);
@@ -49,6 +61,16 @@ void Engine::Graphics::GameObject::Draw(Renderer * renderer)
 	}
 
 	if (m_dirty) m_dirty = false;
+}
+
+void Engine::Graphics::GameObject::Invalidate()
+{
+	m_dirty = true;
+}
+
+std::vector<Engine::Graphics::GameObject*> Engine::Graphics::GameObject::getChilds()
+{
+	return childs;
 }
 
 void Engine::Graphics::GameObject::Add(GameObject * gameobject)

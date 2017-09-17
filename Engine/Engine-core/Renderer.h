@@ -10,9 +10,9 @@ namespace Engine {
 		using namespace Math;
 		struct VertexData
 		{
-			Vec3f vertex;
+			Vec4f vertex;
 			Color color;
-			Vec3f tex;
+			Vec4f tex;
 			VertexData() {};
 			
 		};

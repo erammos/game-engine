@@ -19,8 +19,9 @@ namespace Engine {
 			void Update() override;
 		
 			void  Init() override;
-			Rect* GetRects(int& size) const {
-				size = str_length;
+			void SetText(const char * text);
+			std::vector<Rect> GetRects() const {
+				
 				return outRect;
 			} 
 

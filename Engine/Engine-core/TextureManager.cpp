@@ -70,7 +70,7 @@ bool TextureManager::CreateTextureAtlas()
 
 		ivec4 coords = texture_atlas_get_region(m_textureAtlas, width, height);
 
-		textures[filename] = Vec2f(coords.x , coords.y );
+		textures[filename] = Vec4f(coords.x , coords.y , width, height);
 
 
 		texture_atlas_set_region(m_textureAtlas, coords.x, coords.y, width, height, bits, pitch);
@@ -142,10 +142,11 @@ int TextureManager::LoadTexture(const char* filename, int& width, int& height)
 	}
 	return -1;
 }
-bool TextureManager::AddTexture(const char* filename, int& width, int& height)
+bool TextureManager::AddTexture(const char* filename )
 {
 
-		
+	if (textures.find(filename) != textures.end())
+		return false;
 
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	//pointer to the image, once loaded
@@ -173,20 +174,19 @@ bool TextureManager::AddTexture(const char* filename, int& width, int& height)
 	if (!dib)
 		return false;
 
-	width = FreeImage_GetWidth(dib);
-	height = FreeImage_GetHeight(dib);
+	int width = FreeImage_GetWidth(dib);
+	int height = FreeImage_GetHeight(dib);
 	
 	//if this somehow one of these failed (they shouldn't), return failure
 	if ((width == 0) || (height == 0))
 		return false;
 
-	if (textures.find(filename) != textures.end()) 
-		return false;
-
+	
+	textures[filename] = Vec4f(-1, -1, width, height);
 	atlas_width += width;
 	atlas_height +=height;
 
-	textures[filename] = Vec2f(-1,-1);
+
 	FreeImage_Unload(dib);
 	return true;
 }
@@ -277,12 +277,16 @@ bool TextureManager::UnloadTexture(const unsigned int texID)
 
 void TextureManager::BindTextures()
 {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_textureAtlas->id);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_fontAtlas->id);
-
+	if (m_textureAtlas!=NULL)
+	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_textureAtlas->id);
+	}
+	if (m_fontAtlas!=NULL)
+	{
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, m_fontAtlas->id);
+	}
 		
 
 }

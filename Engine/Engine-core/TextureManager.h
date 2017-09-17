@@ -13,7 +13,7 @@
 #include <GL/glew.h>
 #include "FreeImage.h"
 #include <map>
-#include "Vec2.h"
+#include "Vec4.h"
 #include "freetype-gl.h"
 using namespace Engine;
 using namespace Math;
@@ -24,9 +24,9 @@ public:
 	static TextureManager* Inst();
 	std::map<unsigned int, GLuint> m_texID;
 
-	std::map<std::string ,Vec2f> textures;
-	texture_atlas_t* m_textureAtlas;
-	texture_atlas_t* m_fontAtlas;
+	std::map<std::string ,Vec4f> textures;
+	texture_atlas_t* m_textureAtlas = NULL;
+	texture_atlas_t* m_fontAtlas = NULL;
 
 	int atlas_width = 0;
 	int atlas_height = 0;
@@ -42,7 +42,7 @@ public:
 		GLint level = 0,					//mipmapping level
 		GLint border = 0 );					//border size
 	int LoadTexture(const char* filename, int& width, int& height);
-	bool AddTexture(const char* filename, int& width, int& height);
+	bool AddTexture(const char* filename);
 
 	//free the memory for a texture
 	bool UnloadTexture(const unsigned int texID);

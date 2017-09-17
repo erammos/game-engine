@@ -16,7 +16,7 @@ namespace Engine {
 		public:	
 			
 			virtual void Draw(Renderer * renderer);
-			virtual void Init() = 0;
+			
 			inline const Color& GetColor() const { return color; }
 			virtual ~GraphicComponent()
 			{

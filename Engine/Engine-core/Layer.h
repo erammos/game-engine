@@ -17,9 +17,9 @@ namespace Engine {
 		public:
 			Layer( Shader * shader, Renderer * renderer): layerShader(shader), renderer(renderer)
 			{
-				shader->enable();
-				glUniformMatrix4fv(glGetUniformLocation(shader->program_id, "proj_matrix"), 1, GL_FALSE, Mat4f::ortho(0.0, 80.0f, 0.0f, 60.0f, 1.0f, -1.0f).values);
-				shader->disable();
+
+				layerShader = shader;
+				this->renderer = renderer;
 			}
 			virtual ~Layer()
 			{
@@ -34,7 +34,7 @@ namespace Engine {
 
 			void render()
 			{
-				layerShader->enable();
+				//layerShader->enable();
 				renderer->Begin();
 				for (int i = 0; i < objects.size(); i++)
 				{

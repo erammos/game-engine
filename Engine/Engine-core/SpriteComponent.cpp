@@ -9,7 +9,8 @@ using namespace Graphics;
 void Engine::Graphics::SpriteComponent::Init()
 {
 
-	Vec2f percetages = TextureManager::Inst()->textures[imageName];
+	Vec4f percetages = TextureManager::Inst()->textures[imageName];
+
 
 	double Ax = (percetages.x ) / (double)TextureManager::Inst()->atlas_width;
 	double Ay = (percetages.y ) / (double)TextureManager::Inst()->atlas_height;
@@ -18,10 +19,10 @@ void Engine::Graphics::SpriteComponent::Init()
 	double By = (percetages.y + height) / (double)TextureManager::Inst()->atlas_height;
 
 
-    rect.bl.tex = Vec3f(Ax, Ay, 0);
-    rect.tl.tex = Vec3f(Ax, By, 0);
-	rect.tr.tex = Vec3f(Bx, By, 0);
-	rect.br.tex = Vec3f(Bx, Ay, 0);
+    rect.bl.tex = Vec4f(Ax, Ay, 0);
+    rect.tl.tex = Vec4f(Ax, By, 0);
+	rect.tr.tex = Vec4f(Bx, By, 0);
+	rect.br.tex = Vec4f(Bx, Ay, 0);
 	
 	RectComponent::Init();
 }
@@ -32,7 +33,9 @@ SpriteComponent::SpriteComponent(const char * imageName) : RectComponent(Color(0
 	this->x = 0;
 	this->y = 0;
 	this->imageName = imageName;
-	TextureManager::Inst()->AddTexture(imageName, width, height);
+	TextureManager::Inst()->AddTexture(imageName);
+	width = TextureManager::Inst()->textures[imageName].z;
+	height = TextureManager::Inst()->textures[imageName].w;
 
 }
 

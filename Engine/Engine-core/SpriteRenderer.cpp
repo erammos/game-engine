@@ -63,6 +63,8 @@ Engine::Graphics::SpriteRenderer::~SpriteRenderer()
 void Engine::Graphics::SpriteRenderer::DrawText(texture_font_t * font,
 	const char * text, Color color, int x, int y)
 {
+
+	Begin();
 	size_t i;
 	float r = color.r, g = color.g, b = color.b, a = color.a;
 	int originx = x;
@@ -92,25 +94,25 @@ void Engine::Graphics::SpriteRenderer::DrawText(texture_font_t * font,
 			originx += glyph->advance_x;
 
 
-			m_buffer->vertex = Vec3f(x0, y0, 0);
+			m_buffer->vertex = Vec4f(x0, y0, 0);
 
 			m_buffer->color = Color(r, g, b, a);
-			m_buffer->tex = Vec3f(s0, t0, 1);
-
-			m_buffer++;
-			m_buffer->vertex = Vec3f(x0, y1, 0);
-			m_buffer->color = Color(r, g, b, a);
-			m_buffer->tex = Vec3f(s0, t1, 1);
+			m_buffer->tex = Vec4f(s0, t0, 1);
 
 			m_buffer++;
-			m_buffer->vertex = Vec3f(x1, y1, 0);
+			m_buffer->vertex = Vec4f(x0, y1, 0);
 			m_buffer->color = Color(r, g, b, a);
-			m_buffer->tex = Vec3f(s1, t1, 1);
+			m_buffer->tex = Vec4f(s0, t1, 1);
 
 			m_buffer++;
-			m_buffer->vertex = Vec3f(x1, y0, 0);
+			m_buffer->vertex = Vec4f(x1, y1, 0);
 			m_buffer->color = Color(r, g, b, a);
-			m_buffer->tex = Vec3f(s1, t0, 1);
+			m_buffer->tex = Vec4f(s1, t1, 1);
+
+			m_buffer++;
+			m_buffer->vertex = Vec4f(x1, y0, 0);
+			m_buffer->color = Color(r, g, b, a);
+			m_buffer->tex = Vec4f(s1, t0, 1);
 
 			m_buffer++;
 
@@ -119,6 +121,8 @@ void Engine::Graphics::SpriteRenderer::DrawText(texture_font_t * font,
 
 		}
 	}
+
+	End();
 }
 
 
@@ -134,10 +138,10 @@ void Engine::Graphics::SpriteRenderer::Begin()
 void Engine::Graphics::SpriteRenderer::Draw(GraphicComponent* renderable)
 {
 	RectComponent * obj = (RectComponent *)renderable;
-	int size;
-	Rect* rect = obj->GetRects(size);
+	
+	std::vector<Rect> rect = obj->GetRects();
 
-	for (int numRects = 0; numRects < size; numRects++)
+	for (int numRects = 0; numRects < rect.size(); numRects++)
 	{
 		VertexData * p = &rect[numRects].bl;
 		for (int i = 0; i < 4; i++)

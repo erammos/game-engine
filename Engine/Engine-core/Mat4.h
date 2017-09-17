@@ -1,5 +1,5 @@
 #pragma once
-#include "Vec3.h"
+#include "Vec4.h"
 
 namespace Engine {
 	namespace Math {
@@ -12,7 +12,7 @@ namespace Engine {
 			union
 			{
 				T values[16];
-				Vec3<T> columns[4];
+				Vec4<T> columns[4];
 			};
 		
 			
@@ -39,9 +39,9 @@ namespace Engine {
 
 					return m;
 				}
-				Vec3<T> operator *(const Vec3<T> &src) const
+				Vec4<T> operator *(const Vec4<T> &src) const
 				{
-					Vec3<T> dst;
+					Vec4<T> dst;
 					dst.x = src.x * values[0] + src.y * values[4] + src.z *  values[8] + values[12];
 					dst.y = src.x * values[1] + src.y * values[5] + src.z * values[9] + values[13];
 					dst.z = src.x * values[2] + src.y * values[6] + src.z *  values[10] + values[14];
@@ -115,12 +115,12 @@ namespace Engine {
 					return vt;
 
 				}*/
-				static Mat4 persp2(double fov, double aspect, double d_min, double d_max)
+				static Mat4 persp(double fov, double aspect, double d_min, double d_max)
 				{
 
 					Mat4 m = identity();
 
-					double u_max = d_min*tan(fov);
+					double u_max = d_min*tan(fov * 0.5f);
 					double r_max = aspect*u_max;
 					double u_min = -u_max;
 					double r_min = -r_max;
@@ -153,39 +153,9 @@ namespace Engine {
 					return m;
 
 				}
-				static Mat4 persp(T fov, T aspect, T near, T far)
-				{
+				
 
-					Mat4 m = identity();
-
-					const T h = 1.0f / tanf(3.14159f/6.0f);
-					
-
-					m.values[0] = h / aspect;
-					m.values[1] = 0.0f;
-					m.values[2] = 0.0f;
-					m.values[3] = 0.0f;
-
-					m.values[4] = 0.0f;
-					m.values[5] = h;
-					m.values[6] = 0.0f;
-					m.values[7] = 0.0f;
-
-					m.values[8] = 0.0f;
-					m.values[9] = 0.0f;
-					m.values[10] = -50.0f/ (50.0f-1.0f);
-					m.values[11] = -(50.0f*1.0f)/(50.0f-1.0f);
-
-					m.values[12] = 0.0f;
-					m.values[13] = 0.0f;
-					m.values[14] = -1.0;
-					m.values[15] = 0.0f;
-
-					return m;
-
-				}
-
-				static Mat4 translation(const Vec3<T>& t)
+				static Mat4 translation(const Vec4<T>& t)
 				{
 					return translation(t.x, t.y, t.z);
 				}
