@@ -1,1 +1,1 @@
-# software-rendering
+# Software Rendering Demo + Minimalistic Game Framework Under Construction
