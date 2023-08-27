@@ -1,1 +1,2 @@
-# Software Rendering Demo + Minimal Game Framework [Deprecated]
+# [Deprecated]
+## Software Rendering Demo + Minimal Game Framework
